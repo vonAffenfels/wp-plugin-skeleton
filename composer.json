@@ -31,6 +31,9 @@
         "vonaffenfels/vaf-wp-framework": "dev-main"
     },
     "scripts": {
+        "pre-autoload-dump": [
+            "mkdir -p vendor_prefixed"
+        ],
         "post-autoload-dump": [
             "VAF\\WP\\Framework\\Composer\\PluginActions::prefixDependencies"
         ],
