@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  VAF\WP\PluginSkeleton:
+    resource: '../src/'
+    exclude:
+      - '../src/Plugin.php'

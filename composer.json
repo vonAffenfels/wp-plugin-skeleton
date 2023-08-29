@@ -1,0 +1,41 @@
+{
+    "name": "vonaffenfels/wp-plugin-skeleton",
+    "description": "Skeleton for development of Wordpress plugins using the vAF Wordpress Framework",
+    "homepage": "https://github.com/vonaffenfels/wp-plugin-skeleton",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Christoph Friedrich",
+            "email": "christoph.friedrich@vonaffenfels.de"
+        }
+    ],
+    "config": {
+        "optimize-autoloader": true,
+        "classmap-authoritative": true,
+        "platform": {
+            "php": "8.1"
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "classmap": [
+            "src/",
+            "vendor_prefixed"
+        ]
+    },
+    "require-dev": {
+        "php": ">=8.1",
+        "humbug/php-scoper": "^0.18.3",
+        "vonaffenfels/vaf-wp-framework": "dev-main"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "VAF\\WP\\Framework\\Composer\\PluginActions::prefixDependencies"
+        ],
+        "post-create-project-cmd": [
+            "VAF\\WP\\Framework\\Composer\\PluginActions::postCreateProject"
+        ]
+    }
+}
