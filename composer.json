@@ -32,7 +32,7 @@
     },
     "scripts": {
         "post-create-project-cmd": [
-            "VAF\\WP\\Framework\\Composer\\PluginSkeletonAction::onPostCreateProjec"
+            "VAF\\WP\\Framework\\Composer\\PluginSkeletonAction::onPostCreateProject"
         ]
     }
 }
