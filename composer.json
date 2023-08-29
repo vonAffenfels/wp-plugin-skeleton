@@ -35,7 +35,7 @@
             "VAF\\WP\\Framework\\Composer\\PluginActions::prefixDependencies"
         ],
         "post-create-project-cmd": [
-            "VAF\\WP\\Framework\\Composer\\PluginActions::postCreateProject"
+            "VAF\\WP\\Framework\\Composer\\PluginSkeletonAction::onPostCreateProjec"
         ]
     }
 }
