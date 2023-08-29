@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f38bf92d2dd7f7fccd973dd379bfea58",
+    "content-hash": "2749a711af073404cb47222c5eef61b3",
     "packages": [],
     "packages-dev": [
         {
@@ -1752,16 +1752,16 @@
         },
         {
             "name": "vonaffenfels/vaf-wp-framework",
-            "version": "dev-main",
+            "version": "0.2.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vonAffenfels/vaf-wp-framework.git",
-                "reference": "6cdbecaed2068420f69e3c2b9f8975b8ad8745a0"
+                "reference": "b4ba34ca7ad0c296f3ec3bd00633c06710bb5905"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vonAffenfels/vaf-wp-framework/zipball/6cdbecaed2068420f69e3c2b9f8975b8ad8745a0",
-                "reference": "6cdbecaed2068420f69e3c2b9f8975b8ad8745a0",
+                "url": "https://api.github.com/repos/vonAffenfels/vaf-wp-framework/zipball/b4ba34ca7ad0c296f3ec3bd00633c06710bb5905",
+                "reference": "b4ba34ca7ad0c296f3ec3bd00633c06710bb5905",
                 "shasum": ""
             },
             "require": {
@@ -1777,7 +1777,6 @@
                 "humbug/php-scoper": "^0.18.3",
                 "squizlabs/php_codesniffer": "^3.6"
             },
-            "default-branch": true,
             "type": "project",
             "autoload": {
                 "psr-4": {
@@ -1804,9 +1803,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vonAffenfels/vaf-wp-framework/issues",
-                "source": "https://github.com/vonAffenfels/vaf-wp-framework/tree/0.2.15"
+                "source": "https://github.com/vonAffenfels/vaf-wp-framework/tree/0.2.16"
             },
-            "time": "2023-08-29T17:03:52+00:00"
+            "time": "2023-08-29T17:08:28+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1869,9 +1868,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "vonaffenfels/vaf-wp-framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": [],
