@@ -4,7 +4,7 @@ use VAF\WP\Framework\PHPScoperConfigGenerator;
 
 $scoperConfigGen = new PHPScoperConfigGenerator(
     baseDir: __DIR__,
-    prefix: 'VAFWPPluginSkeleton_Vendor',
+    prefix: '%%VENDOR_NAMESPACE%%',
     buildDir: './vendor_prefixed'
 );
 

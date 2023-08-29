@@ -3,7 +3,7 @@ services:
     autowire: true
     autoconfigure: true
 
-  VAF\WP\PluginSkeleton:
+  %%PLUGIN_NAMESPACE%%:
     resource: '../src/'
     exclude:
       - '../src/Plugin.php'

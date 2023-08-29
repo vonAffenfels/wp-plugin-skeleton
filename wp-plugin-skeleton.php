@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Plugin Name:       %%PLUGINNAME%%
- * Description:       %%PLUGINDESCRIPTION%%
+ * Plugin Name:       %%PLUGIN_NAME%%
+ * Description:       %%PLUGIN_DESCRIPTION%%
  * Version:           1.0.0
  * Requires at least: 6.2
- * Author:            Christoph Friedrich <christoph.friedrich@vonaffenfels.de>
- * Author URI:        https://www.vonaffenfels.de
+ * Author:            %%AUTHOR_COMPLETE%%
+ * Author URI:        %%WEBSITE%%
  */
 
-use VAF\WP\PluginSkeleton\Plugin;
+use %%PLUGIN_NAMESPACE%%\Plugin;
 
 if (!defined('ABSPATH')) {
     die('');

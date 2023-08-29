@@ -1,8 +1,15 @@
 # wp-plugin-skeleton
 Skeleton for development of Wordpress plugins using the vAF Wordpress Framework
 
-%%PLUGINNAME%%
-%%PLUGINDESCRIPTION%%
+%%PLUGIN_NAME%%
+%%PLUGIN_DESCRIPTION%%
+%%PLUGIN_SLUG%%
+%%PLUGIN_NAMESPACE%%
+%%VENDOR_NAMESPACE%%
+%%AUTHOR_COMPLETE%%
+%%WEBSITE%%
+%%AUTHOR_NAME%%
+%%AUTHOR_EMAIL%%
 
 VAF\WP\PluginSkeleton
 VAFWPPluginSkeleton_Vendor
