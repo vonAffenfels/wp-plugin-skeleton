@@ -226,10 +226,6 @@ END;
         self::createScoperIncPhp($vendorNamespace);
         self::createMainPluginFile($slug, $pluginName, $pluginDescription, $namespace, $authorName, $authorEmail, $website);
         self::patchComposerJson($slug, $pluginDescription, $namespace, $authorName, $authorEmail, $website);
-        $eventDispatcher = $event->getComposer()->getEventDispatcher();
-        $eventDispatcher->addListener('internal-skeleton', 'composer update');
-        $eventDispatcher->addListener('internal-skeleton', 'composer build-container');
-        $eventDispatcher->dispatch('internal-skeleton');
-        $io->writeError(['', '<info>Finished</info>', 'Don\'t forget to check files and do last changes', 'Happy development']);
+        $io->writeError(['', '<info>Finished</info>', 'Don\'t forget to check files and do last changes', 'Before using the plugin run <comment>composer update</comment> and <comment>composer build-container</comment>', 'Happy development']);
     }
 }
