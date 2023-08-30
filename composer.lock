@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2749a711af073404cb47222c5eef61b3",
+    "content-hash": "ff4cffaa4bdc4dbfc42699978bf068b2",
     "packages": [],
     "packages-dev": [
         {
@@ -1752,16 +1752,16 @@
         },
         {
             "name": "vonaffenfels/vaf-wp-framework",
-            "version": "0.2.17",
+            "version": "0.2.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vonAffenfels/vaf-wp-framework.git",
-                "reference": "6dd713d07e812906ceae2951b0c4a03b9b3d43b2"
+                "reference": "22ca786702af1ba356fef614e13c5f83c6b31514"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vonAffenfels/vaf-wp-framework/zipball/6dd713d07e812906ceae2951b0c4a03b9b3d43b2",
-                "reference": "6dd713d07e812906ceae2951b0c4a03b9b3d43b2",
+                "url": "https://api.github.com/repos/vonAffenfels/vaf-wp-framework/zipball/22ca786702af1ba356fef614e13c5f83c6b31514",
+                "reference": "22ca786702af1ba356fef614e13c5f83c6b31514",
                 "shasum": ""
             },
             "require": {
@@ -1803,9 +1803,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vonAffenfels/vaf-wp-framework/issues",
-                "source": "https://github.com/vonAffenfels/vaf-wp-framework/tree/0.2.17"
+                "source": "https://github.com/vonAffenfels/vaf-wp-framework/tree/0.2.18"
             },
-            "time": "2023-08-30T06:14:29+00:00"
+            "time": "2023-08-30T07:33:35+00:00"
         },
         {
             "name": "webmozart/assert",

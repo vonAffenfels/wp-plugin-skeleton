@@ -135,7 +135,7 @@ END;
     }
     private static function createMainPluginFile(string $slug, string $pluginName, string $pluginDescription, string $namespace, string $authorName, string $authorEmail, string $website) : void
     {
-        $pluginName = " * Plugin Name:       {$pluginName}";
+        $pluginName = " * Plugin Name:       {$pluginName}\n";
         if (!empty($pluginDescription)) {
             $pluginDescription = " * Description:       {$pluginDescription}\n";
         }
@@ -226,6 +226,10 @@ END;
         self::createScoperIncPhp($vendorNamespace);
         self::createMainPluginFile($slug, $pluginName, $pluginDescription, $namespace, $authorName, $authorEmail, $website);
         self::patchComposerJson($slug, $pluginDescription, $namespace, $authorName, $authorEmail, $website);
+        $eventDispatcher = $event->getComposer()->getEventDispatcher();
+        $eventDispatcher->addListener('internal-skeleton', '@composer update');
+        $eventDispatcher->addListener('internal-skeleton', "{$namespace}\\Plugin::buildContainer");
+        $eventDispatcher->dispatch('internal-skeleton');
         $io->writeError(['', '<info>Finished</info>', 'Don\'t forget to check files and do last changes', 'Happy development']);
     }
 }
