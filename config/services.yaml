@@ -3,7 +3,7 @@ services:
     autowire: true
     autoconfigure: true
 
-  %%PLUGIN_NAMESPACE%%:
+  WP\Plugin\Skeleton\:
     resource: '../src/'
     exclude:
       - '../src/Plugin.php'

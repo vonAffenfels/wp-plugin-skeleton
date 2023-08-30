@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Plugin Name:       %%PLUGIN_NAME%%
- * Description:       %%PLUGIN_DESCRIPTION%%
+ * Plugin Name:       WP Plugin Skeleton
+ * Description:       Skeleton for development of Wordpress plugins using the vAF Wordpress Framework
  * Version:           1.0.0
  * Requires at least: 6.2
- * Author:            %%AUTHOR_COMPLETE%%
- * Author URI:        %%WEBSITE%%
+ * Author:            Christoph Friedrich <christoph.friedrich@vonaffenfels.de>
+ * Author URI:        https://www.vonaffenfels.de
  */
 
-use %%PLUGIN_NAMESPACE%%\Plugin;
+use WP\Plugin\Skeleton\Plugin;
 
 if (!defined('ABSPATH')) {
     die('');

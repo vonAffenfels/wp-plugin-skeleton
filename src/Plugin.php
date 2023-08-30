@@ -1,7 +1,7 @@
 <?php
 
-namespace %%PLUGIN_NAMESPACE%%;
+namespace WP\Plugin\Skeleton;
 
-class Plugin extends \VAF\WP\Framework\Plugin
+class Plugin extends \WPPluginSkeleton_Vendor\VAF\WP\Framework\Plugin
 {
 }

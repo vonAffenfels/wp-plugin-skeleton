@@ -33,6 +33,12 @@
     "scripts": {
         "post-create-project-cmd": [
             "VAF\\WP\\Framework\\Composer\\PluginSkeletonAction::onPostCreateProject"
+        ],
+        "build-container": [
+            "WP\\Plugin\\Skeleton\\Plugin::buildContainer"
+        ],
+        "post-autoload-dump": [
+            "VAF\\WP\\Framework\\Composer\\PluginActions::prefixDependencies"
         ]
     }
 }
