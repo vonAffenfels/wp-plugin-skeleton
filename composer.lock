@@ -1752,16 +1752,16 @@
         },
         {
             "name": "vonaffenfels/vaf-wp-framework",
-            "version": "0.2.18",
+            "version": "0.2.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vonAffenfels/vaf-wp-framework.git",
-                "reference": "22ca786702af1ba356fef614e13c5f83c6b31514"
+                "reference": "31820c7184be330868f458f6964967bd3afcabc1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vonAffenfels/vaf-wp-framework/zipball/22ca786702af1ba356fef614e13c5f83c6b31514",
-                "reference": "22ca786702af1ba356fef614e13c5f83c6b31514",
+                "url": "https://api.github.com/repos/vonAffenfels/vaf-wp-framework/zipball/31820c7184be330868f458f6964967bd3afcabc1",
+                "reference": "31820c7184be330868f458f6964967bd3afcabc1",
                 "shasum": ""
             },
             "require": {
@@ -1803,9 +1803,9 @@
             ],
             "support": {
                 "issues": "https://github.com/vonAffenfels/vaf-wp-framework/issues",
-                "source": "https://github.com/vonAffenfels/vaf-wp-framework/tree/0.2.18"
+                "source": "https://github.com/vonAffenfels/vaf-wp-framework/tree/0.2.19"
             },
-            "time": "2023-08-30T07:33:35+00:00"
+            "time": "2023-08-30T07:37:11+00:00"
         },
         {
             "name": "webmozart/assert",

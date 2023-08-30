@@ -228,7 +228,7 @@ END;
         self::patchComposerJson($slug, $pluginDescription, $namespace, $authorName, $authorEmail, $website);
         $eventDispatcher = $event->getComposer()->getEventDispatcher();
         $eventDispatcher->addListener('internal-skeleton', '@composer update');
-        $eventDispatcher->addListener('internal-skeleton', "{$namespace}\\Plugin::buildContainer");
+        $eventDispatcher->addListener('internal-skeleton', "@composer build-container");
         $eventDispatcher->dispatch('internal-skeleton');
         $io->writeError(['', '<info>Finished</info>', 'Don\'t forget to check files and do last changes', 'Happy development']);
     }
