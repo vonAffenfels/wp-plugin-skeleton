@@ -35,7 +35,7 @@
     "scripts": {
         "init-tests": [
             "composer require pestphp/pest --dev --with-all-dependencies",
-            "./vendor/bin/pest --init",
+            "./vendor/bin/pest --init"
         ],
         "post-create-project-cmd": [
             "VAF\\WP\\Framework\\Composer\\PluginSkeletonAction::onPostCreateProject"
