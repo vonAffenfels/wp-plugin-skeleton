@@ -5,7 +5,8 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\RestAPI;
 use Exception;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
-use WPPluginSkeleton_Vendor\WP_REST_Request;
+use WP_REST_Request;
+/** @internal */
 final class Loader
 {
     public function __construct(private readonly WordpressKernel $kernel, private readonly BaseWordpress $base, private readonly array $restContainer)
@@ -25,7 +26,10 @@ final class Loader
                     $params[$param] = $this->kernel->getContainer()->get($service);
                 }
                 $methodName = $restRoute['callback'];
-                $options = ['methods' => $restRoute['method']->value, 'callback' => function (WP_REST_Request $request) use($serviceId, $methodName, $params, $restRoute) : array {
+                $options = ['permission_callback' => match ($restRoute['permission']['type']) {
+                    'none' => fn() => \true,
+                    'wordpress_permission' => fn() => current_user_can($restRoute['permission']['wordpress_permission_name']),
+                }, 'methods' => $restRoute['method']->value, 'callback' => function (WP_REST_Request $request) use($serviceId, $methodName, $params, $restRoute) : array|WP_HTTP_Response {
                     $return = ['success' => \false];
                     foreach ($restRoute['params'] as $name) {
                         if (!isset($restRoute['paramsDefault'][$name]) && !$request->has_param($name)) {
@@ -54,6 +58,9 @@ final class Loader
                     try {
                         $container = $this->kernel->getContainer()->get($serviceId);
                         $retVal = $container->{$methodName}(...$params);
+                        if ($retVal instanceof \WPPluginSkeleton_Vendor\WP_HTTP_Response) {
+                            return $retVal;
+                        }
                         if ($retVal !== \false) {
                             $return['success'] = \true;
                             if (!\is_null($retVal)) {

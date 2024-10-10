@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * CompilerPassInterface.
  *
  * @author Wouter J <wouter@wouterj.nl>
+ * @internal
  */
 class ExtensionCompilerPass implements CompilerPassInterface
 {

@@ -17,6 +17,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Loader;
  * Each loader determines whether it can load a resource and how.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class LoaderResolver implements LoaderResolverInterface
 {
@@ -33,7 +34,7 @@ class LoaderResolver implements LoaderResolverInterface
             $this->addLoader($loader);
         }
     }
-    public function resolve(mixed $resource, string $type = null) : LoaderInterface|false
+    public function resolve(mixed $resource, ?string $type = null) : LoaderInterface|false
     {
         foreach ($this->loaders as $loader) {
             if ($loader->supports($resource, $type)) {

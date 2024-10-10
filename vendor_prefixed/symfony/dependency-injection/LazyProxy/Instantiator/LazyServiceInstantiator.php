@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Inva
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\LazyProxy\PhpDumper\LazyServiceDumper;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 final class LazyServiceInstantiator implements InstantiatorInterface
 {

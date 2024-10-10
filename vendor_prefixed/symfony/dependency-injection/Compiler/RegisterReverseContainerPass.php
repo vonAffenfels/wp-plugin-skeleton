@@ -17,6 +17,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class RegisterReverseContainerPass implements CompilerPassInterface
 {

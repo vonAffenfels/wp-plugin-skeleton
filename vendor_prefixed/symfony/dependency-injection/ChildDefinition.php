@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\OutO
  * This definition extends another definition.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ChildDefinition extends Definition
 {

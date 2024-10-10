@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Template\Attribute;
 
 use Attribute;
+/** @internal */
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 class UseScript
 {

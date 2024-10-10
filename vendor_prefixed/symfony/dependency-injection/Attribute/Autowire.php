@@ -18,6 +18,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
  * Attribute to tell a parameter how to be autowired.
  *
  * @author Kevin Bond <kevinbond@gmail.com>
+ * @internal
  */
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
 class Autowire
@@ -34,7 +35,7 @@ class Autowire
      * @param string|null                         $param      Parameter name (ie 'some.parameter.name')
      * @param bool|class-string|class-string[]    $lazy       Whether to use lazy-loading for this argument
      */
-    public function __construct(string|array|ArgumentInterface $value = null, string $service = null, string $expression = null, string $env = null, string $param = null, bool|string|array $lazy = \false)
+    public function __construct(string|array|ArgumentInterface|null $value = null, ?string $service = null, ?string $expression = null, ?string $env = null, ?string $param = null, bool|string|array $lazy = \false)
     {
         if ($this->lazy = \is_string($lazy) ? [$lazy] : $lazy) {
             if (null !== ($expression ?? $env ?? $param)) {

@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Shortcode;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
+/** @internal */
 final class Loader
 {
     public function __construct(private readonly WordpressKernel $kernel, private readonly array $shortcodeContainer)

@@ -18,6 +18,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\ResourceCheckerInterface;
  * this class as a standard way of validating them.
  *
  * @author Matthias Pigulla <mp@webfactory.de>
+ * @internal
  */
 class SelfCheckingResourceChecker implements ResourceCheckerInterface
 {

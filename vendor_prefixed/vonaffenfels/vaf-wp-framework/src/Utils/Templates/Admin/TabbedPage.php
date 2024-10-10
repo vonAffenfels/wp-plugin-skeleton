@@ -4,6 +4,7 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Template\Attribute\IsTemplate;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Template\Template;
+/** @internal */
 #[IsTemplate(templateFile: '@vaf-wp-framework/admin/tabbedPage')]
 final class TabbedPage extends Template
 {

@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Para
  * ParameterBagInterface is the interface implemented by objects that manage service container parameters.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 interface ParameterBagInterface
 {

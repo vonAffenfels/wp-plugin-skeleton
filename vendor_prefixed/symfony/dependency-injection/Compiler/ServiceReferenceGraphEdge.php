@@ -16,6 +16,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler
  * Value is typically a reference.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ServiceReferenceGraphEdge
 {

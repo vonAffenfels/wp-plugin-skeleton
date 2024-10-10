@@ -14,10 +14,11 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader;
  * GlobFileLoader loads files from a glob pattern.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class GlobFileLoader extends FileLoader
 {
-    public function load(mixed $resource, string $type = null) : mixed
+    public function load(mixed $resource, ?string $type = null) : mixed
     {
         foreach ($this->glob($resource, \false, $globResource) as $path => $info) {
             $this->import($path);
@@ -25,7 +26,7 @@ class GlobFileLoader extends FileLoader
         $this->container->addResource($globResource);
         return null;
     }
-    public function supports(mixed $resource, string $type = null) : bool
+    public function supports(mixed $resource, ?string $type = null) : bool
     {
         return 'glob' === $type;
     }

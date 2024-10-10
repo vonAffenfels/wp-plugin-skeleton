@@ -25,6 +25,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\XmlFile
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @internal
  */
 trait ExtensionTrait
 {

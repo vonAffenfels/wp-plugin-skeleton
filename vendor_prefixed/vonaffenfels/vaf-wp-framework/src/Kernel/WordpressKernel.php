@@ -13,19 +13,30 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminAjax\LoaderCompilerPass as Adm
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\Attributes\IsTabbedPage;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\TabbedPageCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit\Attribute\AsBulkEditContainer;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\GutenbergBlock\Attribute\AsDynamicBlock;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\GutenbergBlock\Loader as GutenbergBlockLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\GutenbergBlock\LoaderCompilerPass as GutenbergBlockCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook\Attribute\AsHookContainer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook\Loader as HookLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook\LoaderCompilerPass as HookLoaderCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Menu\Attribute\AsMenuContainer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Menu\Loader as MenuLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Menu\LoaderCompilerPass as MenuLoaderCompilerPass;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\Attribute\AsMetaboxContainer;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\Loader as MetaboxLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\LoaderCompilerPass as MetaboxLoaderCompilerPass;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit\Loader as BulkeditLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit\LoaderCompilerPass as BulkeditLoaderCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Attributes\PostType;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Attributes\PostTypeExtension;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\ExtensionLoader as PostObjectExtensionLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\ExtensionLoaderCompilerPass as PostObjectExtensionLoaderCompilerPass;
-use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Page;
-use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Post;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\PostObjectManager;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\PostTypeLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\PostTypes\NavMenuItem;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\PostTypes\Page;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\PostTypes\Post;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Request;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\RestAPI\Attribute\AsRestContainer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\RestAPI\Loader as RestAPILoader;
@@ -41,17 +52,20 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\Template\Attribute\UseScript;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Attribute\AsFunctionContainer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Attribute\AsTemplateEngine;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\PHTMLEngine;
-use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\Twig\Extension;
-use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\Twig\FileLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\TwigRenderer\Extension;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\TwigRenderer\FileLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\TwigEngine;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\EngineCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\FunctionCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\FunctionHandler;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Functions\BuiltIn\Wordpress;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\GlobalContext;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\NamespaceHandler;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\TemplateRenderer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin\Notice;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin\ReactTemplate;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin\TabbedPage as TabbedPageTemplate;
+/** @internal */
 abstract class WordpressKernel extends Kernel
 {
     public function __construct(string $projectDir, bool $debug, string $namespace, protected readonly BaseWordpress $base)
@@ -63,6 +77,15 @@ abstract class WordpressKernel extends Kernel
         /** @var HookLoader $hookLoader */
         $hookLoader = $this->getContainer()->get('hook.loader');
         $hookLoader->registerHooks();
+        /** @var MetaboxLoader $metaboxLoader */
+        $metaboxLoader = $this->getContainer()->get('metabox.loader');
+        $metaboxLoader->registerMetaboxes();
+        /** @var BulkEditLoader $bulkeditLoader */
+        $bulkeditLoader = $this->getContainer()->get('bulkedit.loader');
+        $bulkeditLoader->registerBulkEditFields();
+        /** @var GutenbergBlockLoader $gutenbergBlockLoader */
+        $gutenbergBlockLoader = $this->getContainer()->get('gutenbergblock.loader');
+        $gutenbergBlockLoader->registerBlocks();
         /** @var ShortcodeLoader $shortcodeLoader */
         $shortcodeLoader = $this->getContainer()->get('shortcode.loader');
         $shortcodeLoader->registerShortcodes();
@@ -72,6 +95,9 @@ abstract class WordpressKernel extends Kernel
         /** @var PostObjectExtensionLoader $extensionLoader */
         $extensionLoader = $this->getContainer()->get('postobject.extensionLoader');
         $extensionLoader->registerPostObjectExtensions();
+        /** @var PostTypeLoader $postTypeLoader */
+        $postTypeLoader = $this->getContainer()->get(PostTypeLoader::class);
+        $postTypeLoader->registerPostTypes();
         // Registering REST routes
         add_action('rest_api_init', function () {
             /** @var RestAPILoader $restApiLoader */
@@ -107,6 +133,9 @@ abstract class WordpressKernel extends Kernel
         $this->registerTemplateRenderer($builder);
         $this->registerTemplate($builder);
         $this->registerHookContainer($builder);
+        $this->registerMetaboxContainer($builder);
+        $this->registerBulkeditContainer($builder);
+        $this->registerGutenbergBlock($builder);
         $this->registerShortcodeContainer($builder);
         $this->registerSettingsContainer($builder);
         $this->registerRestAPIContainer($builder);
@@ -114,6 +143,7 @@ abstract class WordpressKernel extends Kernel
         $this->registerAdminPages($builder);
         $this->registerAdminAjaxContainer($builder);
         $this->registerPostObjects($builder);
+        $builder->register(ReactTemplate::class, ReactTemplate::class)->setAutoconfigured(\true)->setAutowired(\true);
         $this->base->configureContainer($builder, $container);
     }
     /**
@@ -134,16 +164,19 @@ abstract class WordpressKernel extends Kernel
         $builder->registerAttributeForAutoconfiguration(PostTypeExtension::class, static function (ChildDefinition $definition) : void {
             $definition->addTag('postobject.extension');
         });
-        $managerDefinition = $builder->register(PostObjectManager::class, PostObjectManager::class)->setArgument('$registeredPostObjects', [])->setPublic(\true)->setAutowired(\true);
-        $builder->registerAttributeForAutoconfiguration(PostType::class, static function (ChildDefinition $definition, PostType $attribute, ReflectionClass $reflectionClass) use($managerDefinition) : void {
-            $registeredPostObjects = $managerDefinition->getArgument('$registeredPostObjects');
-            $registeredPostObjects[$attribute->postType] = $reflectionClass->getName();
-            $managerDefinition->replaceArgument('$registeredPostObjects', $registeredPostObjects);
+        $loaderDefinition = $builder->register(PostTypeLoader::class, PostTypeLoader::class)->setArgument('$postTypes', [])->setPublic(\true)->setAutowired(\true);
+        $builder->registerAttributeForAutoconfiguration(PostType::class, static function (ChildDefinition $definition, PostType $attribute, ReflectionClass $reflectionClass) use($loaderDefinition) : void {
+            $postTypes = $loaderDefinition->getArgument('$postTypes');
+            $postTypes[$attribute->postType] = $reflectionClass->getName();
+            $loaderDefinition->replaceArgument('$postTypes', $postTypes);
             $definition->setPublic(\true);
             $definition->setShared(\false);
+            $definition->setAutoconfigured(\true);
+            $definition->setAutowired(\true);
         });
-        $builder->register(Page::class, Page::class)->setAutoconfigured(\true);
-        $builder->register(Post::class, Post::class)->setAutoconfigured(\true);
+        $builder->register(Page::class, Page::class)->setAutoconfigured(\true)->setAutowired(\true);
+        $builder->register(Post::class, Post::class)->setAutoconfigured(\true)->setAutowired(\true);
+        $builder->register(NavMenuItem::class, NavMenuItem::class)->setAutoconfigured(\true)->setAutowired(\true);
     }
     private function registerTemplate(ContainerBuilder $builder) : void
     {
@@ -158,6 +191,7 @@ abstract class WordpressKernel extends Kernel
         });
         $builder->register(Notice::class, Notice::class)->setAutoconfigured(\true)->setAutowired(\true);
         $builder->setAlias('template.notice', Notice::class)->setPublic(\true);
+        $builder->register(GlobalContext::class, GlobalContext::class)->setPublic(\true);
     }
     private function registerTemplateRenderer(ContainerBuilder $builder) : void
     {
@@ -226,8 +260,32 @@ abstract class WordpressKernel extends Kernel
     {
         $builder->register('hook.loader', HookLoader::class)->setPublic(\true)->setAutowired(\true);
         $builder->addCompilerPass(new HookLoaderCompilerPass());
-        $builder->registerAttributeForAutoconfiguration(AsHookContainer::class, static function (ChildDefinition $defintion) : void {
-            $defintion->addTag('hook.container');
+        $builder->registerAttributeForAutoconfiguration(AsHookContainer::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('hook.container');
+        });
+    }
+    private function registerMetaboxContainer(ContainerBuilder $builder)
+    {
+        $builder->register('metabox.loader', MetaboxLoader::class)->setPublic(\true)->setAutowired(\true);
+        $builder->addCompilerPass(new MetaboxLoaderCompilerPass());
+        $builder->registerAttributeForAutoconfiguration(AsMetaboxContainer::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('metabox.container');
+        });
+    }
+    private function registerBulkeditContainer(ContainerBuilder $builder)
+    {
+        $builder->register('bulkedit.loader', BulkeditLoader::class)->setPublic(\true)->setAutowired(\true);
+        $builder->addCompilerPass(new BulkeditLoaderCompilerPass());
+        $builder->registerAttributeForAutoconfiguration(AsBulkEditContainer::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('bulkedit.container');
+        });
+    }
+    private function registerGutenbergBlock(ContainerBuilder $builder) : void
+    {
+        $builder->register('gutenbergblock.loader', GutenbergBlockLoader::class)->setPublic(\true)->setAutowired(\true);
+        $builder->addCompilerPass(new GutenbergBlockCompilerPass());
+        $builder->registerAttributeForAutoconfiguration(AsDynamicBlock::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('gutenbergblock.dynamicblock');
         });
     }
     private function registerRestAPIContainer(ContainerBuilder $builder) : void

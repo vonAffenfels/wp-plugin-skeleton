@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Setting\Attribute;
 
 use Attribute;
+/** @internal */
 #[Attribute(Attribute::TARGET_CLASS)]
 class AsSettingContainer
 {

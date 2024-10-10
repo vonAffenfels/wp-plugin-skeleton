@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\ResourceCheckerInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Maxime Steinhausser <maxime.steinhausser@gmail.com>
+ * @internal
  */
 class ContainerParametersResourceChecker implements ResourceCheckerInterface
 {

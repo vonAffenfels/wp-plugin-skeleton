@@ -14,6 +14,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ServiceConfigurator extends AbstractServiceConfigurator
 {
@@ -44,7 +45,7 @@ class ServiceConfigurator extends AbstractServiceConfigurator
     private bool $allowParent;
     private ?string $path;
     private bool $destructed = \false;
-    public function __construct(ContainerBuilder $container, array $instanceof, bool $allowParent, ServicesConfigurator $parent, Definition $definition, ?string $id, array $defaultTags, string $path = null)
+    public function __construct(ContainerBuilder $container, array $instanceof, bool $allowParent, ServicesConfigurator $parent, Definition $definition, ?string $id, array $defaultTags, ?string $path = null)
     {
         $this->container = $container;
         $this->instanceof = $instanceof;

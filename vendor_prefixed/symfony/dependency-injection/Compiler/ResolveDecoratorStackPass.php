@@ -19,6 +19,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Serv
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ResolveDecoratorStackPass implements CompilerPassInterface
 {

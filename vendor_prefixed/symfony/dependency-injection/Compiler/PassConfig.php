@@ -17,6 +17,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Inva
  * This class has a default configuration embedded.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class PassConfig
 {

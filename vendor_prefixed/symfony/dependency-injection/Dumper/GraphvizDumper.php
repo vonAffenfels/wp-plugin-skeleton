@@ -25,6 +25,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  *   dot -Tpng container.dot > foo.png
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class GraphvizDumper extends Dumper
 {

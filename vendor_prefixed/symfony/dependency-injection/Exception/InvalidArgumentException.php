@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
  * Base InvalidArgumentException for Dependency Injection component.
  *
  * @author Bulat Shakirzyanov <bulat@theopenskyproject.com>
+ * @internal
  */
 class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {

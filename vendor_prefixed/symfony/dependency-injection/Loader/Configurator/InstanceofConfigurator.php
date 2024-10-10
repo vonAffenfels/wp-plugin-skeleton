@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\C
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class InstanceofConfigurator extends AbstractServiceConfigurator
 {
@@ -28,7 +29,7 @@ class InstanceofConfigurator extends AbstractServiceConfigurator
     use Traits\TagTrait;
     public const FACTORY = 'instanceof';
     private ?string $path;
-    public function __construct(ServicesConfigurator $parent, Definition $definition, string $id, string $path = null)
+    public function __construct(ServicesConfigurator $parent, Definition $definition, string $id, ?string $path = null)
     {
         parent::__construct($parent, $definition, $id, []);
         $this->path = $path;

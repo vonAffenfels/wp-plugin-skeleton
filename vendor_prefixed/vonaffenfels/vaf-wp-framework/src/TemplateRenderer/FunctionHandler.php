@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\Kernel;
+/** @internal */
 class FunctionHandler
 {
     public function __construct(private readonly array $functionList, private readonly Kernel $kernel)
@@ -26,6 +27,14 @@ class FunctionHandler
         $params = \array_merge($params, $args);
         $functionContainer = $this->kernel->getContainer()->get($functionData['container']);
         $methodName = $functionData['method'];
-        return $functionContainer->{$methodName}(...$params);
+        $ret = $functionContainer->{$methodName}(...$params);
+        if (\is_null($ret)) {
+            # If we get no return value we return an empty string
+            return "";
+        }
+        if (!$functionData['isSafeHTML'] && \is_string($ret)) {
+            $ret = \htmlentities($ret);
+        }
+        return $ret;
     }
 }

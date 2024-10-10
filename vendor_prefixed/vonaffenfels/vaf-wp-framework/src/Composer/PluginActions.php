@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Composer;
 
 use WPPluginSkeleton_Vendor\Composer\Script\Event;
+/** @internal */
 class PluginActions
 {
     public static function prefixDependencies(Event $event) : void

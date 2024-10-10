@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception;
  * Base exception for all configuration exceptions.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class Exception extends \RuntimeException
 {

@@ -25,6 +25,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\FileLoa
  * - synthetic services are always public
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class CheckDefinitionValidityPass implements CompilerPassInterface
 {

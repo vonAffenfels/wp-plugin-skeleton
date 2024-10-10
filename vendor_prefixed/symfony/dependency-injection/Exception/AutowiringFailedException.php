@@ -12,15 +12,16 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
 
 /**
  * Thrown when a definition cannot be autowired.
+ * @internal
  */
 class AutowiringFailedException extends RuntimeException
 {
     private string $serviceId;
     private ?\Closure $messageCallback = null;
-    public function __construct(string $serviceId, string|\Closure $message = '', int $code = 0, \Throwable $previous = null)
+    public function __construct(string $serviceId, string|\Closure $message = '', int $code = 0, ?\Throwable $previous = null)
     {
         $this->serviceId = $serviceId;
-        if ($message instanceof \Closure && (\function_exists('xdebug_is_enabled') ? \xdebug_is_enabled() : \function_exists('xdebug_info'))) {
+        if ($message instanceof \Closure && \function_exists('xdebug_is_enabled') && \xdebug_is_enabled()) {
             $message = $message();
         }
         if (!$message instanceof \Closure) {

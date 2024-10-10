@@ -10,9 +10,10 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Exception;
 
+/** @internal */
 class NotInstantiableTypeException extends \Exception implements ExceptionInterface
 {
-    public function __construct(string $type, \Throwable $previous = null)
+    public function __construct(string $type, ?\Throwable $previous = null)
     {
         parent::__construct(\sprintf('Type "%s" is not instantiable.', $type), 0, $previous);
     }

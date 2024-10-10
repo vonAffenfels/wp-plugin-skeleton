@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\UnsetK
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Christophe Coevoet <stof@notk.org>
+ * @internal
  */
 class ExprBuilder
 {
@@ -36,7 +37,7 @@ class ExprBuilder
      *
      * @return $this
      */
-    public function always(\Closure $then = null) : static
+    public function always(?\Closure $then = null) : static
     {
         $this->ifPart = static fn() => \true;
         $this->allowedTypes = self::TYPE_ANY;
@@ -52,7 +53,7 @@ class ExprBuilder
      *
      * @return $this
      */
-    public function ifTrue(\Closure $closure = null) : static
+    public function ifTrue(?\Closure $closure = null) : static
     {
         $this->ifPart = $closure ?? static fn($v) => \true === $v;
         $this->allowedTypes = self::TYPE_ANY;

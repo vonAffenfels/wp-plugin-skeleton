@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Para
  * ContainerBagInterface is the interface implemented by objects that manage service container parameters.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 interface ContainerBagInterface extends ContainerInterface
 {

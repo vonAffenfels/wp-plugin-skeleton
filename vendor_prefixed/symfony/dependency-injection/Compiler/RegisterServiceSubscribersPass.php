@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler
 use WPPluginSkeleton_Vendor\Psr\Container\ContainerInterface as PsrContainerInterface;
 use WPPluginSkeleton_Vendor\Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument\BoundArgument;
+use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Attribute\Autowire;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -26,9 +27,11 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\ServiceSubscriberInterface
  * Compiler pass to register tagged services that require a service locator.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class RegisterServiceSubscribersPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         if (!$value instanceof Definition || $value->isAbstract() || $value->isSynthetic() || !$value->hasTag('container.service_subscriber')) {
@@ -69,15 +72,20 @@ class RegisterServiceSubscribersPass extends AbstractRecursivePass
         $subscriberMap = [];
         foreach ($class::getSubscribedServices() as $key => $type) {
             $attributes = [];
+            if (!isset($serviceMap[$key]) && $type instanceof Autowire) {
+                $subscriberMap[$key] = $type;
+                continue;
+            }
             if ($type instanceof SubscribedService) {
-                $key = $type->key;
+                $key = $type->key ?? $key;
                 $attributes = $type->attributes;
                 $type = ($type->nullable ? '?' : '') . ($type->type ?? throw new InvalidArgumentException(\sprintf('When "%s::getSubscribedServices()" returns "%s", a type must be set.', $class, SubscribedService::class)));
             }
             if (!\is_string($type) || !\preg_match('/(?(DEFINE)(?<cn>[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*+))(?(DEFINE)(?<fqcn>(?&cn)(?:\\\\(?&cn))*+))^\\??(?&fqcn)(?:(?:\\|(?&fqcn))*+|(?:&(?&fqcn))*+)$/', $type)) {
                 throw new InvalidArgumentException(\sprintf('"%s::getSubscribedServices()" must return valid PHP types for service "%s" key "%s", "%s" returned.', $class, $this->currentId, $key, \is_string($type) ? $type : \get_debug_type($type)));
             }
-            if ($optionalBehavior = '?' === $type[0]) {
+            $optionalBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE;
+            if ('?' === $type[0]) {
                 $type = \substr($type, 1);
                 $optionalBehavior = ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
             }
@@ -107,7 +115,7 @@ class RegisterServiceSubscribersPass extends AbstractRecursivePass
                 $camelCaseName = \lcfirst(\str_replace(' ', '', \ucwords(\preg_replace('/[^a-zA-Z0-9\\x7f-\\xff]++/', ' ', $name))));
                 $name = $this->container->has($type . ' $' . $camelCaseName) ? $camelCaseName : $name;
             }
-            $subscriberMap[$key] = new TypedReference((string) $serviceMap[$key], $type, $optionalBehavior ?: ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $name, $attributes);
+            $subscriberMap[$key] = new TypedReference((string) $serviceMap[$key], $type, $optionalBehavior, $name, $attributes);
             unset($serviceMap[$key]);
         }
         if ($serviceMap = \array_keys($serviceMap)) {

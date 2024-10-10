@@ -23,6 +23,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\PhpFile
 use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ContainerConfigurator extends AbstractConfigurator
 {
@@ -34,7 +35,7 @@ class ContainerConfigurator extends AbstractConfigurator
     private string $file;
     private int $anonymousCount = 0;
     private ?string $env;
-    public function __construct(ContainerBuilder $container, PhpFileLoader $loader, array &$instanceof, string $path, string $file, string $env = null)
+    public function __construct(ContainerBuilder $container, PhpFileLoader $loader, array &$instanceof, string $path, string $file, ?string $env = null)
     {
         $this->container = $container;
         $this->loader = $loader;
@@ -51,7 +52,7 @@ class ContainerConfigurator extends AbstractConfigurator
         }
         $this->container->loadFromExtension($namespace, static::processValue($config));
     }
-    public final function import(string $resource, string $type = null, bool|string $ignoreErrors = \false) : void
+    public final function import(string $resource, ?string $type = null, bool|string $ignoreErrors = \false) : void
     {
         $this->loader->setCurrentDir(\dirname($this->path));
         $this->loader->import($resource, $type, $ignoreErrors, $this->file);
@@ -81,6 +82,7 @@ class ContainerConfigurator extends AbstractConfigurator
 }
 /**
  * Creates a parameter.
+ * @internal
  */
 function param(string $name) : ParamConfigurator
 {
@@ -88,6 +90,7 @@ function param(string $name) : ParamConfigurator
 }
 /**
  * Creates a reference to a service.
+ * @internal
  */
 function service(string $serviceId) : ReferenceConfigurator
 {
@@ -95,8 +98,9 @@ function service(string $serviceId) : ReferenceConfigurator
 }
 /**
  * Creates an inline service.
+ * @internal
  */
-function inline_service(string $class = null) : InlineServiceConfigurator
+function inline_service(?string $class = null) : InlineServiceConfigurator
 {
     return new InlineServiceConfigurator(new Definition($class));
 }
@@ -104,6 +108,7 @@ function inline_service(string $class = null) : InlineServiceConfigurator
  * Creates a service locator.
  *
  * @param array<ReferenceConfigurator|InlineServiceConfigurator> $values
+ * @internal
  */
 function service_locator(array $values) : ServiceLocatorArgument
 {
@@ -117,6 +122,7 @@ function service_locator(array $values) : ServiceLocatorArgument
  * Creates a lazy iterator.
  *
  * @param ReferenceConfigurator[] $values
+ * @internal
  */
 function iterator(array $values) : IteratorArgument
 {
@@ -124,20 +130,23 @@ function iterator(array $values) : IteratorArgument
 }
 /**
  * Creates a lazy iterator by tag name.
+ * @internal
  */
-function tagged_iterator(string $tag, string $indexAttribute = null, string $defaultIndexMethod = null, string $defaultPriorityMethod = null, string|array $exclude = [], bool $excludeSelf = \true) : TaggedIteratorArgument
+function tagged_iterator(string $tag, ?string $indexAttribute = null, ?string $defaultIndexMethod = null, ?string $defaultPriorityMethod = null, string|array $exclude = [], bool $excludeSelf = \true) : TaggedIteratorArgument
 {
     return new TaggedIteratorArgument($tag, $indexAttribute, $defaultIndexMethod, \false, $defaultPriorityMethod, (array) $exclude, $excludeSelf);
 }
 /**
  * Creates a service locator by tag name.
+ * @internal
  */
-function tagged_locator(string $tag, string $indexAttribute = null, string $defaultIndexMethod = null, string $defaultPriorityMethod = null, string|array $exclude = [], bool $excludeSelf = \true) : ServiceLocatorArgument
+function tagged_locator(string $tag, ?string $indexAttribute = null, ?string $defaultIndexMethod = null, ?string $defaultPriorityMethod = null, string|array $exclude = [], bool $excludeSelf = \true) : ServiceLocatorArgument
 {
     return new ServiceLocatorArgument(new TaggedIteratorArgument($tag, $indexAttribute, $defaultIndexMethod, \true, $defaultPriorityMethod, (array) $exclude, $excludeSelf));
 }
 /**
  * Creates an expression.
+ * @internal
  */
 function expr(string $expression) : Expression
 {
@@ -145,6 +154,7 @@ function expr(string $expression) : Expression
 }
 /**
  * Creates an abstract argument.
+ * @internal
  */
 function abstract_arg(string $description) : AbstractArgument
 {
@@ -152,6 +162,7 @@ function abstract_arg(string $description) : AbstractArgument
 }
 /**
  * Creates an environment variable reference.
+ * @internal
  */
 function env(string $name) : EnvConfigurator
 {
@@ -159,6 +170,7 @@ function env(string $name) : EnvConfigurator
 }
 /**
  * Creates a closure service reference.
+ * @internal
  */
 function service_closure(string $serviceId) : ClosureReferenceConfigurator
 {
@@ -166,6 +178,7 @@ function service_closure(string $serviceId) : ClosureReferenceConfigurator
 }
 /**
  * Creates a closure.
+ * @internal
  */
 function closure(string|array|ReferenceConfigurator|Expression $callable) : InlineServiceConfigurator
 {

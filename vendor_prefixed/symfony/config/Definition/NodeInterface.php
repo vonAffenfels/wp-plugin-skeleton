@@ -20,6 +20,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  * this interface yourself.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 interface NodeInterface
 {

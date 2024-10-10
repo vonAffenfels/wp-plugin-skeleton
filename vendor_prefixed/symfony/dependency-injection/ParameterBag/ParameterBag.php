@@ -17,6 +17,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Runt
  * Holds parameters.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class ParameterBag implements ParameterBagInterface
 {
@@ -151,7 +152,7 @@ class ParameterBag implements ParameterBagInterface
      * @param TValue $value
      * @param array  $resolving An array of keys that are being resolved (used internally to detect circular references)
      *
-     * @return (TValue is scalar ? array|scalar : array<array|scalar>)
+     * @psalm-return (TValue is scalar ? array|scalar : array<array|scalar>)
      *
      * @throws ParameterNotFoundException          if a placeholder references a parameter that does not exist
      * @throws ParameterCircularReferenceException if a circular reference if detected
@@ -170,7 +171,7 @@ class ParameterBag implements ParameterBagInterface
             }
             return $args;
         }
-        if (!\is_string($value) || 2 > \strlen($value)) {
+        if (!\is_string($value) || '' === $value || !\str_contains($value, '%')) {
             return $value;
         }
         return $this->resolveString($value, $resolving);

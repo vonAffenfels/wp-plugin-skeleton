@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\VariableNode;
  * This class provides a fluent interface for defining a node.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class VariableNodeDefinition extends NodeDefinition
 {
@@ -29,10 +30,10 @@ class VariableNodeDefinition extends NodeDefinition
     protected function createNode() : NodeInterface
     {
         $node = $this->instantiateNode();
-        if (null !== $this->normalization) {
+        if (isset($this->normalization)) {
             $node->setNormalizationClosures($this->normalization->before);
         }
-        if (null !== $this->merge) {
+        if (isset($this->merge)) {
             $node->setAllowOverwrite($this->merge->allowOverwrite);
         }
         if (\true === $this->default) {
@@ -46,7 +47,7 @@ class VariableNodeDefinition extends NodeDefinition
         if ($this->deprecation) {
             $node->setDeprecated($this->deprecation['package'], $this->deprecation['version'], $this->deprecation['message']);
         }
-        if (null !== $this->validation) {
+        if (isset($this->validation)) {
             $node->setFinalValidationClosures($this->validation->rules);
         }
         return $node;

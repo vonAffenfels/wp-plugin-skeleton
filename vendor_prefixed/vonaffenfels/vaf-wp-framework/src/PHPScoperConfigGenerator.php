@@ -4,20 +4,40 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework;
 
 use Exception;
 use WPPluginSkeleton_Vendor\Isolated\Symfony\Component\Finder\Finder;
+/** @internal */
 final class PHPScoperConfigGenerator
 {
     private array $ignoredPackages = ['friendsofphp/php-cs-fixer', 'humbug/php-scoper', 'squizlabs/php_codesniffer', 'roave/security-advisories'];
+    private array $ignoredNamespaces = [];
     private array $packagesProcessed = [];
     private array $packagesToProcess = [];
     private array $patchers = [];
     public function __construct(private readonly string $baseDir, private readonly string $prefix, private readonly string $buildDir)
     {
-        $this->addPackagePatcher('symfony/dependency-injection', [$this, 'getPatcherSymfonyDI']);
+        $this->ignorePackage('phpunit/phpunit');
+        $this->ignorePackage('mockery/mockery');
+        $this->ignorePackage('twig/twig');
+        $this->ignoreNamespace('/^Twig/');
+        $this->addPackagePatcher('symfony/dependency-injection', function (string $filePath, string $prefix, string $content) : string {
+            return $this->patchSymfonyDI($filePath, $prefix, $content);
+        });
+        $this->addPackagePatcher('vonaffenfels/vaf-wp-framework', function (string $filePath, string $prefix, string $content) : string {
+            return $this->patchVAFFramework($filePath, $prefix, $content);
+        });
+        $this->addPackagePatcher('vonaffenfels/vaf-wp-framework', function (string $filePath, string $prefix, string $content) : string {
+            return \str_replace(\sprintf("%s\\WP_REST_Request", $prefix), "WP_REST_Request", $content);
+        });
     }
     public function ignorePackage(string $package) : void
     {
         if (!\in_array($package, $this->ignoredPackages)) {
             $this->ignoredPackages[] = $package;
+        }
+    }
+    private function ignoreNamespace(string $namespace) : void
+    {
+        if (!\in_array($namespace, $this->ignoredNamespaces)) {
+            $this->ignoredNamespaces[] = $namespace;
         }
     }
     public function addPackagePatcher(string $package, callable $patcher) : void
@@ -88,20 +108,27 @@ final class PHPScoperConfigGenerator
                 $patchers = \array_merge($patchers, $this->patchers[$package]);
             }
         }
-        return ['prefix' => $this->prefix, 'output-dir' => $this->buildDir, 'finders' => $finders, 'patchers' => $patchers];
+        return ['prefix' => $this->prefix, 'output-dir' => $this->buildDir, 'finders' => $finders, 'exclude-namespaces' => $this->ignoredNamespaces, 'patchers' => $patchers];
     }
-    private function getPatcherSymfonyDI(string $filePath, string $prefix, string $content) : string
+    private function patchVAFFramework(string $filePath, string $prefix, string $content) : string
+    {
+        if (!\str_contains($filePath, 'templates/admin/notice.phtml')) {
+            return $content;
+        }
+        return \str_replace('WPPluginSkeleton_Vendor\\VAF\\WP\\Framework\\Utils\\NoticeType::INFO', $prefix . '\\VAF\\WP\\Framework\\Utils\\NoticeType::INFO', $content);
+    }
+    private function patchSymfonyDI(string $filePath, string $prefix, string $content) : string
     {
         if (!\str_contains($filePath, 'Compiler/ResolveInstanceofConditionalsPass.php')) {
             return $content;
         }
         $lenPrefix = \strlen($prefix . '\\');
-        $content = \preg_replace_callback('/\\$definition = \\\\substr_replace\\(\\$definition, \'(53)\', 2, 2\\);/', function (array $matches) use($lenPrefix) : string {
+        $content = \preg_replace_callback('/\\$definition = \\\\?substr_replace\\(\\$definition, \'([0-9]+)\', 2, 2\\);/', function (array $matches) use($lenPrefix) : string {
             $origLength = $matches[1];
             $newLength = $origLength + $lenPrefix;
             return \str_replace("'{$origLength}'", "'{$newLength}'", $matches[0]);
         }, $content);
-        return \preg_replace_callback('/\\$definition = \\\\substr_replace\\(\\$definition, \'Child\', (44), 0\\);/', function (array $matches) use($lenPrefix) : string {
+        return \preg_replace_callback('/\\$definition = \\\\?substr_replace\\(\\$definition, \'Child\', ([0-9]+), 0\\);/', function (array $matches) use($lenPrefix) : string {
             $origOffset = $matches[1];
             $newOffset = $origOffset + $lenPrefix;
             return \str_replace(", {$origOffset}, ", ", {$newOffset}, ", $matches[0]);

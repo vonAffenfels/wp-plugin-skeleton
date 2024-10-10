@@ -11,6 +11,7 @@ use InvalidArgumentException;
 use WPPluginSkeleton_Vendor\Seld\JsonLint\ParsingException;
 use WPPluginSkeleton_Vendor\Symfony\Component\Process\ExecutableFinder;
 use WPPluginSkeleton_Vendor\Symfony\Component\Process\Process;
+/** @internal */
 class PluginSkeletonAction
 {
     private static ?array $gitConfig = null;

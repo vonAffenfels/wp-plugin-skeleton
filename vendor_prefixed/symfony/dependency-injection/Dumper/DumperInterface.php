@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Dumper;
  * DumperInterface is the interface implemented by service container dumper classes.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 interface DumperInterface
 {

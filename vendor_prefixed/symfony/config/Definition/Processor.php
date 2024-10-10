@@ -16,6 +16,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition;
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *
  * @final
+ * @internal
  */
 class Processor
 {
@@ -63,7 +64,7 @@ class Processor
      * @param string      $key    The key to normalize
      * @param string|null $plural The plural form of the key if it is irregular
      */
-    public static function normalizeConfig(array $config, string $key, string $plural = null) : array
+    public static function normalizeConfig(array $config, string $key, ?string $plural = null) : array
     {
         $plural ??= $key . 's';
         if (isset($config[$plural])) {

@@ -18,20 +18,21 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * The Closure has access to the container as its first argument.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class ClosureLoader extends Loader
 {
     private ContainerBuilder $container;
-    public function __construct(ContainerBuilder $container, string $env = null)
+    public function __construct(ContainerBuilder $container, ?string $env = null)
     {
         $this->container = $container;
         parent::__construct($env);
     }
-    public function load(mixed $resource, string $type = null) : mixed
+    public function load(mixed $resource, ?string $type = null) : mixed
     {
         return $resource($this->container, $this->env);
     }
-    public function supports(mixed $resource, string $type = null) : bool
+    public function supports(mixed $resource, ?string $type = null) : bool
     {
         return $resource instanceof \Closure;
     }

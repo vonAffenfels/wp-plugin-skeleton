@@ -7,6 +7,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\Kernel;
+/** @internal */
 abstract class BaseWordpress
 {
     protected Kernel $kernel;

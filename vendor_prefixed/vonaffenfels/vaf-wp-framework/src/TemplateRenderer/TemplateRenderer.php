@@ -3,14 +3,15 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer;
 
 use InvalidArgumentException;
-use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\TemplateEngine;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Plugin;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine\TemplateEngine;
+/** @internal */
 final class TemplateRenderer
 {
     private const NAMESPACE = '@vaf-wp-framework';
-    private array $namespaces = [];
-    public function __construct(private readonly BaseWordpress $base, private readonly NamespaceHandler $handler, private readonly array $engines)
+    private bool $debug = \false;
+    public function __construct(private readonly BaseWordpress $base, private readonly NamespaceHandler $handler, private readonly GlobalContext $globalContext, private readonly array $engines)
     {
         $namespacePaths = [];
         $themeSuffixDir = 'templates/';
@@ -29,9 +30,13 @@ final class TemplateRenderer
         $this->registerNamespace($this->base->getName(), $namespacePaths);
         $this->registerNamespace(self::NAMESPACE, [trailingslashit(\realpath(trailingslashit(\dirname(__FILE__)) . '../../templates/'))]);
     }
-    public function registerNamespace(string $namespace, array $directories) : void
+    public function enableDebug() : void
     {
-        $this->handler->registerNamespace($namespace, $directories);
+        $this->debug = \true;
+    }
+    public function registerNamespace(string $namespace, array $directories, bool $overwrite = \false) : void
+    {
+        $this->handler->registerNamespace($namespace, $directories, $overwrite);
     }
     public function render(string $template, array $context = []) : string
     {
@@ -40,8 +45,13 @@ final class TemplateRenderer
         if ($templateFile === \false) {
             throw new InvalidArgumentException(\sprintf('Could not find the template "%s"! Searched in directories: [%s]', $template, \implode(', ', $this->handler->getSearchDirectoriesForTemplate($template))));
         }
+        // Add global context
+        $context['global'] = $this->globalContext;
         /** @var TemplateEngine $engineObj */
         $engineObj = $this->base->getContainer()->get($this->engines[$extension]);
+        if ($this->debug) {
+            $engineObj->enableDebug();
+        }
         return $engineObj->render($templateFile, $context);
     }
     public function output(string $template, array $context = []) : void

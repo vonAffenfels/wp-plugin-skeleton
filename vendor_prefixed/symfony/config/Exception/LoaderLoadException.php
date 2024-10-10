@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Exception;
  * Exception class for when a resource cannot be loaded or imported.
  *
  * @author Ryan Weaver <ryan@thatsquality.com>
+ * @internal
  */
 class LoaderLoadException extends \Exception
 {
@@ -24,7 +25,7 @@ class LoaderLoadException extends \Exception
      * @param \Throwable|null $previous       A previous exception
      * @param string|null     $type           The type of resource
      */
-    public function __construct(mixed $resource, string $sourceResource = null, int $code = 0, \Throwable $previous = null, string $type = null)
+    public function __construct(mixed $resource, ?string $sourceResource = null, int $code = 0, ?\Throwable $previous = null, ?string $type = null)
     {
         if (!\is_string($resource)) {
             try {

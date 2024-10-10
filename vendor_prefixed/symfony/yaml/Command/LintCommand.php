@@ -30,6 +30,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Yaml\Yaml;
  *
  * @author Grégoire Pineau <lyrixx@lyrixx.info>
  * @author Robin Chalas <robin.chalas@gmail.com>
+ * @internal
  */
 #[AsCommand(name: 'lint:yaml', description: 'Lint a YAML file and outputs encountered errors')]
 class LintCommand extends Command
@@ -39,7 +40,7 @@ class LintCommand extends Command
     private bool $displayCorrectFiles;
     private ?\Closure $directoryIteratorProvider;
     private ?\Closure $isReadableProvider;
-    public function __construct(string $name = null, callable $directoryIteratorProvider = null, callable $isReadableProvider = null)
+    public function __construct(?string $name = null, ?callable $directoryIteratorProvider = null, ?callable $isReadableProvider = null)
     {
         parent::__construct($name);
         $this->directoryIteratorProvider = null === $directoryIteratorProvider ? null : $directoryIteratorProvider(...);
@@ -106,7 +107,7 @@ EOF
         }
         return $this->display($io, $filesInfo);
     }
-    private function validate(string $content, int $flags, string $file = null) : array
+    private function validate(string $content, int $flags, ?string $file = null) : array
     {
         $prevErrorHandler = \set_error_handler(function ($level, $message, $file, $line) use(&$prevErrorHandler) {
             if (\E_USER_DEPRECATED === $level) {

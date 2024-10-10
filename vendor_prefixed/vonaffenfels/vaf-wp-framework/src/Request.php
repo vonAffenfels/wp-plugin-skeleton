@@ -2,6 +2,7 @@
 
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework;
 
+/** @internal */
 final class Request
 {
     /**

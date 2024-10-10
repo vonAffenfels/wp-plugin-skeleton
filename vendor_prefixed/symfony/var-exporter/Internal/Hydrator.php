@@ -18,9 +18,9 @@ use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Exception\ClassNotFoun
  */
 class Hydrator
 {
-    public static $hydrators = [];
-    public static $simpleHydrators = [];
-    public static $propertyScopes = [];
+    public static array $hydrators = [];
+    public static array $simpleHydrators = [];
+    public static array $propertyScopes = [];
     public $registry;
     public $values;
     public $properties;
@@ -236,10 +236,18 @@ class Hydrator
             }
             $name = $property->name;
             if (\ReflectionProperty::IS_PRIVATE & $flags) {
-                $propertyScopes["\x00{$class}\x00{$name}"] = $propertyScopes[$name] = [$class, $name, $flags & \ReflectionProperty::IS_READONLY ? $class : null];
+                $readonlyScope = null;
+                if ($flags & \ReflectionProperty::IS_READONLY) {
+                    $readonlyScope = $class;
+                }
+                $propertyScopes["\x00{$class}\x00{$name}"] = $propertyScopes[$name] = [$class, $name, $readonlyScope, $property];
                 continue;
             }
-            $propertyScopes[$name] = [$class, $name, $flags & \ReflectionProperty::IS_READONLY ? $property->class : null];
+            $readonlyScope = null;
+            if ($flags & \ReflectionProperty::IS_READONLY) {
+                $readonlyScope = $property->class;
+            }
+            $propertyScopes[$name] = [$class, $name, $readonlyScope, $property];
             if (\ReflectionProperty::IS_PROTECTED & $flags) {
                 $propertyScopes["\x00*\x00{$name}"] = $propertyScopes[$name];
             }
@@ -250,8 +258,8 @@ class Hydrator
                 if (!$property->isStatic()) {
                     $name = $property->name;
                     $readonlyScope = $property->isReadOnly() ? $class : null;
-                    $propertyScopes["\x00{$class}\x00{$name}"] = [$class, $name, $readonlyScope];
-                    $propertyScopes[$name] ??= [$class, $name, $readonlyScope];
+                    $propertyScopes["\x00{$class}\x00{$name}"] = [$class, $name, $readonlyScope, $property];
+                    $propertyScopes[$name] ??= [$class, $name, $readonlyScope, $property];
                 }
             }
         }

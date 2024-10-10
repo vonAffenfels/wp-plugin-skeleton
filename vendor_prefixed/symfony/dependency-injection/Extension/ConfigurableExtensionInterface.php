@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 /**
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @internal
  */
 interface ConfigurableExtensionInterface extends ConfigurableInterface
 {

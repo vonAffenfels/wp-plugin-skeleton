@@ -7,6 +7,7 @@ use ReflectionClass;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Attribute\AsTemplateEngine;
+/** @internal */
 final class EngineCompilerPass implements CompilerPassInterface
 {
     /**

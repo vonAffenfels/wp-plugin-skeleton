@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 /**
  * Reads #[AsDecorator] attributes on definitions that are autowired
  * and don't have the "container.ignore_attributes" tag.
+ * @internal
  */
 final class AutowireAsDecoratorPass implements CompilerPassInterface
 {

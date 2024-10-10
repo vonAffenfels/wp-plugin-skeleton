@@ -17,6 +17,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * one of the previous passes.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class RemovePrivateAliasesPass implements CompilerPassInterface
 {

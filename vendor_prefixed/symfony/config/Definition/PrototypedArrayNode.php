@@ -18,6 +18,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\UnsetK
  * Represents a prototyped Array node in the config tree.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class PrototypedArrayNode extends ArrayNode
 {

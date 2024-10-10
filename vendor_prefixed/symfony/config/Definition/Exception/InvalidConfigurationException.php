@@ -15,6 +15,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception;
  * exceptions is suitable.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class InvalidConfigurationException extends Exception
 {

@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Filesystem\Exception;
  * Exception interface for all exceptions thrown by the component.
  *
  * @author Romain Neutron <imprec@gmail.com>
+ * @internal
  */
 interface ExceptionInterface extends \Throwable
 {

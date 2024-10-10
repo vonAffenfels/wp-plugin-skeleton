@@ -2,6 +2,7 @@
 
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters;
 
+/** @internal */
 class ParameterBag
 {
     private array $params = [];

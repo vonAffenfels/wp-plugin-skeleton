@@ -17,6 +17,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\OutO
  * Definition represents a service definition.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class Definition
 {
@@ -54,7 +55,7 @@ class Definition
      * Used to store the behavior to follow when using service decoration and the decorated service is invalid
      */
     public ?int $decorationOnInvalid = null;
-    public function __construct(string $class = null, array $arguments = [])
+    public function __construct(?string $class = null, array $arguments = [])
     {
         if (null !== $class) {
             $this->setClass($class);
@@ -117,7 +118,7 @@ class Definition
      *
      * @throws InvalidArgumentException in case the decorated service id and the new decorated service id are equals
      */
-    public function setDecoratedService(?string $id, string $renamedId = null, int $priority = 0, int $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) : static
+    public function setDecoratedService(?string $id, ?string $renamedId = null, int $priority = 0, int $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE) : static
     {
         if ($renamedId && $id === $renamedId) {
             throw new InvalidArgumentException(\sprintf('The decorated service inner name for "%s" must be different than the service name itself.', $id));
@@ -155,6 +156,8 @@ class Definition
     }
     /**
      * Gets the service class.
+     *
+     * @return class-string|null
      */
     public function getClass() : ?string
     {
@@ -660,7 +663,7 @@ class Definition
      *
      * @return $this
      */
-    public function addError(string|\Closure|Definition $error) : static
+    public function addError(string|\Closure|self $error) : static
     {
         if ($error instanceof self) {
             $this->errors = \array_merge($this->errors, $error->errors);

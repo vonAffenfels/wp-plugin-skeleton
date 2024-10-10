@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Loader;
  * LoaderInterface is the interface implemented by all loader classes.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 interface LoaderInterface
 {
@@ -24,7 +25,7 @@ interface LoaderInterface
      *
      * @throws \Exception If something went wrong
      */
-    public function load(mixed $resource, string $type = null);
+    public function load(mixed $resource, ?string $type = null);
     /**
      * Returns whether this class supports the given resource.
      *
@@ -32,7 +33,7 @@ interface LoaderInterface
      *
      * @return bool
      */
-    public function supports(mixed $resource, string $type = null);
+    public function supports(mixed $resource, ?string $type = null);
     /**
      * Gets the loader resolver.
      *

@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Loader;
  * LoaderResolverInterface selects a loader for a given resource.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 interface LoaderResolverInterface
 {
@@ -22,5 +23,5 @@ interface LoaderResolverInterface
      *
      * @param string|null $type The resource type or null if unknown
      */
-    public function resolve(mixed $resource, string $type = null) : LoaderInterface|false;
+    public function resolve(mixed $resource, ?string $type = null) : LoaderInterface|false;
 }

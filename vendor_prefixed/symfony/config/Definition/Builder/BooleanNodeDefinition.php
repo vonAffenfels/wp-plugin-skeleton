@@ -16,10 +16,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  * This class provides a fluent interface for defining a node.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class BooleanNodeDefinition extends ScalarNodeDefinition
 {
-    public function __construct(?string $name, NodeParentInterface $parent = null)
+    public function __construct(?string $name, ?NodeParentInterface $parent = null)
     {
         parent::__construct($name, $parent);
         $this->nullEquivalent = \true;

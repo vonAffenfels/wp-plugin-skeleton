@@ -17,13 +17,14 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
  * service definitions and a callback that produces the real service instance.
  *
  * @author Marco Pivetta <ocramius@gmail.com>
+ * @internal
  */
 interface InstantiatorInterface
 {
     /**
      * Instantiates a proxy object.
      *
-     * @param string $id Identifier of the requested service
+     * @param string            $id               Identifier of the requested service
      * @param callable(object=) $realInstantiator A callback that is capable of producing the real service instance
      *
      * @return object

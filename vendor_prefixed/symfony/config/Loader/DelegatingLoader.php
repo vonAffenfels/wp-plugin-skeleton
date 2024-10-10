@@ -18,6 +18,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Exception\LoaderLoadExcepti
  * a chance to load a given resource (handled by the resolver)
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class DelegatingLoader extends Loader
 {
@@ -25,14 +26,14 @@ class DelegatingLoader extends Loader
     {
         $this->resolver = $resolver;
     }
-    public function load(mixed $resource, string $type = null) : mixed
+    public function load(mixed $resource, ?string $type = null) : mixed
     {
         if (\false === ($loader = $this->resolver->resolve($resource, $type))) {
             throw new LoaderLoadException($resource, null, 0, null, $type);
         }
         return $loader->load($resource, $type);
     }
-    public function supports(mixed $resource, string $type = null) : bool
+    public function supports(mixed $resource, ?string $type = null) : bool
     {
         return \false !== $this->resolver->resolve($resource, $type);
     }

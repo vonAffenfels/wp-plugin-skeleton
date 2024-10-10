@@ -11,6 +11,7 @@
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Extension;
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
+/** @internal */
 interface PrependExtensionInterface
 {
     /**

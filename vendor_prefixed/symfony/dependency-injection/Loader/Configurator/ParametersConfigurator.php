@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Inva
 use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ParametersConfigurator extends AbstractConfigurator
 {

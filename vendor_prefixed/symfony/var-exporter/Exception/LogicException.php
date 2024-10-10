@@ -10,6 +10,7 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Exception;
 
+/** @internal */
 class LogicException extends \LogicException implements ExceptionInterface
 {
 }

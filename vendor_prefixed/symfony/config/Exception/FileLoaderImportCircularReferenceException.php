@@ -14,10 +14,11 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Exception;
  * Exception class for when a circular reference is detected when importing resources.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class FileLoaderImportCircularReferenceException extends LoaderLoadException
 {
-    public function __construct(array $resources, int $code = 0, \Throwable $previous = null)
+    public function __construct(array $resources, int $code = 0, ?\Throwable $previous = null)
     {
         $message = \sprintf('Circular reference detected in "%s" ("%s" > "%s").', $this->varToString($resources[0]), \implode('" > "', $resources), $resources[0]);
         \Exception::__construct($message, $code, $previous);

@@ -6,6 +6,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Loader\LoaderInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Plugin;
+/** @internal */
 class PluginKernel extends WordpressKernel
 {
     protected function bootHandler() : void

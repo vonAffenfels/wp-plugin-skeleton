@@ -22,6 +22,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection;
  * by the PHP dumper.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class Variable
 {

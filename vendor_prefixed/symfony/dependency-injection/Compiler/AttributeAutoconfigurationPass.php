@@ -17,13 +17,15 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Logi
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\RuntimeException;
 /**
  * @author Alexander M. Turek <me@derrabus.de>
+ * @internal
  */
 final class AttributeAutoconfigurationPass extends AbstractRecursivePass
 {
-    private $classAttributeConfigurators = [];
-    private $methodAttributeConfigurators = [];
-    private $propertyAttributeConfigurators = [];
-    private $parameterAttributeConfigurators = [];
+    protected bool $skipScalars = \true;
+    private array $classAttributeConfigurators = [];
+    private array $methodAttributeConfigurators = [];
+    private array $propertyAttributeConfigurators = [];
+    private array $parameterAttributeConfigurators = [];
     public function process(ContainerBuilder $container) : void
     {
         if (!$container->getAutoconfiguredAttributes()) {

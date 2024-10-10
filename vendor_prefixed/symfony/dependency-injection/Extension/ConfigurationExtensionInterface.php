@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * ConfigurationExtensionInterface is the interface implemented by container extension classes.
  *
  * @author Kevin Bond <kevinbond@gmail.com>
+ * @internal
  */
 interface ConfigurationExtensionInterface
 {

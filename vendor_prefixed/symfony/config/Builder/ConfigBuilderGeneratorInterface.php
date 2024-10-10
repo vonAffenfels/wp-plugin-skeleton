@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\ConfigurationInt
  * Generates ConfigBuilders to help create valid config.
  *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * @internal
  */
 interface ConfigBuilderGeneratorInterface
 {

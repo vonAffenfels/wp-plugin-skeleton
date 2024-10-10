@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\ScalarNode;
  * This class provides a fluent interface for defining a node.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ScalarNodeDefinition extends VariableNodeDefinition
 {

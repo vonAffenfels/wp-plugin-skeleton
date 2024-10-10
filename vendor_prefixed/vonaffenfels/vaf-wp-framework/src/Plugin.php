@@ -5,6 +5,7 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework;
 use Exception;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\Kernel;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\PluginKernel;
+/** @internal */
 abstract class Plugin extends BaseWordpress
 {
     /**
@@ -30,9 +31,12 @@ abstract class Plugin extends BaseWordpress
      */
     public static final function buildContainer() : void
     {
+        if (!self::pluginVendorExists()) {
+            die('Please run "composer install" to ensure all dependencies are installed.' . \PHP_EOL);
+        }
         // Set debug to true to always renew the container
         $obj = new static('__BUILD__', \getcwd(), '__BUILD__', \true);
-        $obj->getContainer();
+        $obj->kernel->forceContainerCacheUpdate();
     }
     protected final function createKernel() : Kernel
     {
@@ -41,11 +45,13 @@ abstract class Plugin extends BaseWordpress
     }
     private function registerPluginApi() : void
     {
-        add_action('vaf-get-plugin', function (?Plugin $return, string $plugin) : ?Plugin {
-            if ($plugin === $this->getName()) {
-                $return = $this;
-            }
-            return $return;
-        }, 10, 2);
+        add_action('get-plugin/' . $this->getName(), function () {
+            return $this;
+        }, 10, 0);
+    }
+    private static function pluginVendorExists()
+    {
+        $relVendorLocation = \getcwd() . '/vendor';
+        return \file_exists($relVendorLocation) && \is_dir($relVendorLocation);
     }
 }

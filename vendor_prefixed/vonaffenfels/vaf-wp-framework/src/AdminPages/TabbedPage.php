@@ -8,6 +8,7 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\Request;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\Parameter;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\ParameterBag;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin\TabbedPage as Template;
+/** @internal */
 abstract class TabbedPage
 {
     public final function __construct(private readonly string $pageTitle, private readonly string $pageVar, private readonly ?string $defaultSlug, private array $handler, private readonly Request $request, private readonly Template $template, private readonly WordpressKernel $kernel, private readonly BaseWordpress $base)
@@ -28,7 +29,6 @@ abstract class TabbedPage
             }
             $params[$parameter->getName()] = $this->kernel->getContainer()->get($parameter->getType());
         }
-        $content = '';
         \ob_start();
         $content = $this->{$method}(...$params);
         $contentEcho = \ob_get_clean();

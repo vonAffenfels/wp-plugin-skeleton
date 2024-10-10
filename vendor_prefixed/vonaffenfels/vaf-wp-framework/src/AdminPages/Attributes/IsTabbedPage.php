@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\Attributes;
 
 use Attribute;
+/** @internal */
 #[Attribute(Attribute::TARGET_CLASS)]
 class IsTabbedPage
 {

@@ -4,6 +4,7 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Template;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\TemplateRenderer;
+/** @internal */
 abstract class Template
 {
     public final function __construct(private readonly BaseWordpress $base, private readonly TemplateRenderer $renderer, private readonly string $templateFile)

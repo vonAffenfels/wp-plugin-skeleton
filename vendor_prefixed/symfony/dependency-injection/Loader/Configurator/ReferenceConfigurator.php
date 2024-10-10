@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\C
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ReferenceConfigurator extends AbstractConfigurator
 {

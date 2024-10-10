@@ -20,6 +20,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Resource\SelfCheckingResour
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Matthias Pigulla <mp@webfactory.de>
+ * @internal
  */
 class ConfigCache extends ResourceCheckerConfigCache
 {

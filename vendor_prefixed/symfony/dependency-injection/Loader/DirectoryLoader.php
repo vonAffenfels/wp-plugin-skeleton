@@ -14,10 +14,11 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader;
  * DirectoryLoader is a recursive loader to go through directories.
  *
  * @author Sebastien Lavoie <seb@wemakecustom.com>
+ * @internal
  */
 class DirectoryLoader extends FileLoader
 {
-    public function load(mixed $file, string $type = null) : mixed
+    public function load(mixed $file, ?string $type = null) : mixed
     {
         $file = \rtrim($file, '/');
         $path = $this->locator->locate($file);
@@ -34,7 +35,7 @@ class DirectoryLoader extends FileLoader
         }
         return null;
     }
-    public function supports(mixed $resource, string $type = null) : bool
+    public function supports(mixed $resource, ?string $type = null) : bool
     {
         if ('directory' === $type) {
             return \true;

@@ -13,6 +13,7 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminAjax\Attributes\AsAdminAjaxCon
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminAjax\Attributes\IsAdminAjaxAction;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\Parameter;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\ParameterBag;
+/** @internal */
 final class LoaderCompilerPass implements CompilerPassInterface
 {
     private array $allowedTypes = ['int', 'string', 'bool', 'array'];
@@ -72,7 +73,7 @@ final class LoaderCompilerPass implements CompilerPassInterface
                     $container->findDefinition($type->getName())->setPublic(\true);
                     $isServiceParam = \true;
                 }
-                $parameterBag->addParam(new Parameter(name: $parameter->getName(), type: $type->getName(), isOptional: $parameter->isOptional(), default: $parameter->isOptional() ? $parameter->getDefaultValue() : null, isServiceParam: $isServiceParam));
+                $parameterBag->addParam(new Parameter(name: $parameter->getName(), type: $type->getName(), isOptional: $parameter->isOptional(), default: $parameter->isOptional() ? $parameter->getDefaultValue() : null, isServiceParam: $isServiceParam, isNullable: $parameter->allowsNull()));
             }
             $data[] = ['callback' => $methodName, 'action' => $instance->action, 'params' => $parameterBag->toArray(), 'capability' => $instance->capability];
         }

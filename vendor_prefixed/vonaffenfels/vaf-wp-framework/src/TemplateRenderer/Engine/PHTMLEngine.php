@@ -4,6 +4,7 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Engine;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Attribute\AsTemplateEngine;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\FunctionHandler;
+/** @internal */
 #[AsTemplateEngine(extension: 'phtml')]
 final class PHTMLEngine extends TemplateEngine
 {

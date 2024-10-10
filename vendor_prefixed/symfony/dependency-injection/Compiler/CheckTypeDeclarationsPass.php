@@ -36,9 +36,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Julien Maulny <jmaulny@darkmira.fr>
+ * @internal
  */
 final class CheckTypeDeclarationsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private const SCALAR_TYPES = ['int' => \true, 'float' => \true, 'bool' => \true, 'string' => \true];
     private const BUILTIN_TYPES = ['array' => \true, 'bool' => \true, 'callable' => \true, 'float' => \true, 'int' => \true, 'iterable' => \true, 'object' => \true, 'string' => \true];
     private bool $autoload;
@@ -123,7 +125,7 @@ final class CheckTypeDeclarationsPass extends AbstractRecursivePass
     /**
      * @throws InvalidParameterTypeException When a parameter is not compatible with the declared type
      */
-    private function checkType(Definition $checkedDefinition, mixed $value, \ReflectionParameter $parameter, ?string $envPlaceholderUniquePrefix, \ReflectionType $reflectionType = null) : void
+    private function checkType(Definition $checkedDefinition, mixed $value, \ReflectionParameter $parameter, ?string $envPlaceholderUniquePrefix, ?\ReflectionType $reflectionType = null) : void
     {
         $reflectionType ??= $parameter->getType();
         if ($reflectionType instanceof \ReflectionUnionType) {

@@ -12,6 +12,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
 
 /**
  * Base BadMethodCallException for Dependency Injection component.
+ * @internal
  */
 class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
 {

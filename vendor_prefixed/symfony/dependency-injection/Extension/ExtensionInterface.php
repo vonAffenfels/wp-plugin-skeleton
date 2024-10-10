@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * ExtensionInterface is the interface implemented by container extension classes.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 interface ExtensionInterface
 {

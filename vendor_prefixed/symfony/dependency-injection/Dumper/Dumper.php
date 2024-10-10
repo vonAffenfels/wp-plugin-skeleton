@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * Dumper is the abstract class for all built-in dumpers.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 abstract class Dumper implements DumperInterface
 {

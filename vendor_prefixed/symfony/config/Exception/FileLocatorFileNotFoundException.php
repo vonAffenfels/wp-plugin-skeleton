@@ -14,11 +14,12 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Exception;
  * File locator exception if a file does not exist.
  *
  * @author Leo Feyer <https://github.com/leofeyer>
+ * @internal
  */
 class FileLocatorFileNotFoundException extends \InvalidArgumentException
 {
     private array $paths;
-    public function __construct(string $message = '', int $code = 0, \Throwable $previous = null, array $paths = [])
+    public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null, array $paths = [])
     {
         parent::__construct($message, $code, $previous);
         $this->paths = $paths;

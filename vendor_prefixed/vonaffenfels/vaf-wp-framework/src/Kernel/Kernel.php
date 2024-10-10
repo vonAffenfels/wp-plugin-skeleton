@@ -30,6 +30,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\YamlFil
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
 /**
  * The Kernel is the heart of the library system.
+ * @internal
  */
 abstract class Kernel
 {
@@ -110,6 +111,12 @@ abstract class Kernel
             $container->setAlias($kernelClass, 'kernel')->setPublic(\true);
         });
     }
+    public function forceContainerCacheUpdate() : void
+    {
+        $container = $this->buildContainer();
+        $container->compile();
+        $this->updateContainerCache($container);
+    }
     public function getContainer() : ContainerInterface
     {
         if (!\is_null($this->container)) {
@@ -129,10 +136,7 @@ abstract class Kernel
             $container->compile();
             // Try to cache the container if possible
             try {
-                $this->checkBuildDirectories();
-                $dumper = new PhpDumper($container);
-                $code = $dumper->dump(['class' => self::CONTAINER_CLASS, 'namespace' => $this->namespace]);
-                $cache->write($code, $container->getResources());
+                $this->updateContainerCache($container, $cache);
             } catch (RuntimeException $e) {
                 // Do nothing if directories can't be created
                 // We simply can't cache the container then
@@ -143,6 +147,14 @@ abstract class Kernel
             $this->container->set('kernel', $this);
         }
         return $this->container;
+    }
+    public function updateContainerCache(ContainerBuilder $container, ?ConfigCache $cache = null) : void
+    {
+        $cache ??= new ConfigCache($this->getBuildDir() . '/' . self::CONTAINER_CLASS . '.php', $this->isDebug());
+        $this->checkBuildDirectories();
+        $dumper = new PhpDumper($container);
+        $code = $dumper->dump(['class' => self::CONTAINER_CLASS, 'namespace' => $this->namespace]);
+        $cache->write($code, $container->getResources());
     }
     private function checkBuildDirectories() : void
     {
@@ -162,7 +174,7 @@ abstract class Kernel
      */
     private function getKernelParameters() : array
     {
-        return ['kernel.project_dir' => \realpath($this->getProjectDir()) ?: $this->getProjectDir(), 'kernel.debug' => $this->debug, 'kernel.build_dir' => \realpath($this->getBuildDir()) ?: $this->getBuildDir(), 'kernel.container_class' => self::CONTAINER_CLASS];
+        return ['kernel.debug' => $this->debug, 'kernel.container_class' => self::CONTAINER_CLASS];
     }
     /**
      * Builds the service container.

@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  * Abstract class that contains common code of integer and float node definitions.
  *
  * @author David Jeanmonod <david.jeanmonod@gmail.com>
+ * @internal
  */
 abstract class NumericNodeDefinition extends ScalarNodeDefinition
 {

@@ -12,12 +12,13 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\C
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+/** @internal */
 abstract class AbstractServiceConfigurator extends AbstractConfigurator
 {
     protected $parent;
     protected $id;
     private array $defaultTags = [];
-    public function __construct(ServicesConfigurator $parent, Definition $definition, string $id = null, array $defaultTags = [])
+    public function __construct(ServicesConfigurator $parent, Definition $definition, ?string $id = null, array $defaultTags = [])
     {
         $this->parent = $parent;
         $this->definition = $definition;
@@ -37,7 +38,7 @@ abstract class AbstractServiceConfigurator extends AbstractConfigurator
     /**
      * Registers a service.
      */
-    public final function set(?string $id, string $class = null) : ServiceConfigurator
+    public final function set(?string $id, ?string $class = null) : ServiceConfigurator
     {
         $this->__destruct();
         return $this->parent->set($id, $class);
@@ -89,7 +90,7 @@ abstract class AbstractServiceConfigurator extends AbstractConfigurator
     /**
      * Registers a service.
      */
-    public final function __invoke(string $id, string $class = null) : ServiceConfigurator
+    public final function __invoke(string $id, ?string $class = null) : ServiceConfigurator
     {
         $this->__destruct();
         return $this->parent->set($id, $class);

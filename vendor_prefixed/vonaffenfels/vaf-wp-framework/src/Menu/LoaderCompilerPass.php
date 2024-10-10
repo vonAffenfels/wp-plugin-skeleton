@@ -12,6 +12,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Menu\Attribute\MenuItem;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Capabilities;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Dashicons;
+/** @internal */
 final class LoaderCompilerPass implements CompilerPassInterface
 {
     /**

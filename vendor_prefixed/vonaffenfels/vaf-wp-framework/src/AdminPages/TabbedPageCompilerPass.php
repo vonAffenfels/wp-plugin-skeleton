@@ -13,6 +13,7 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\Attributes\IsTabbedPage;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\Attributes\PageTab;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\Parameter;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\ParameterBag;
+/** @internal */
 final class TabbedPageCompilerPass implements CompilerPassInterface
 {
     /**
@@ -53,7 +54,7 @@ final class TabbedPageCompilerPass implements CompilerPassInterface
                     if ($container->has($type->getName())) {
                         $container->findDefinition($type->getName())->setPublic(\true);
                     }
-                    $parameterBag->addParam(new Parameter(name: $parameter->getName(), type: $type->getName(), isOptional: $parameter->isOptional(), default: $parameter->isOptional() ? $parameter->getDefaultValue() : null, isServiceParam: \true));
+                    $parameterBag->addParam(new Parameter(name: $parameter->getName(), type: $type->getName(), isOptional: $parameter->isOptional(), default: $parameter->isOptional() ? $parameter->getDefaultValue() : null, isServiceParam: \true, isNullable: $parameter->allowsNull()));
                 }
                 $handlerMethods[$slug] = ['params' => $parameterBag->toArray(), 'slug' => $slug, 'title' => $title, 'method' => $method->getName()];
             }

@@ -19,9 +19,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * Inline service definitions where this is possible.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class InlineServiceDefinitionsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private ?AnalyzeServiceReferencesPass $analyzingPass;
     private array $cloningIds = [];
     private array $connectedIds = [];
@@ -29,7 +31,7 @@ class InlineServiceDefinitionsPass extends AbstractRecursivePass
     private array $inlinedIds = [];
     private array $notInlinableIds = [];
     private ?ServiceReferenceGraph $graph = null;
-    public function __construct(AnalyzeServiceReferencesPass $analyzingPass = null)
+    public function __construct(?AnalyzeServiceReferencesPass $analyzingPass = null)
     {
         $this->analyzingPass = $analyzingPass;
     }

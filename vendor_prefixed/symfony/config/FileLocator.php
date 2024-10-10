@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Exception\FileLocatorFileNo
  * FileLocator uses an array of pre-defined paths to find files.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class FileLocator implements FileLocatorInterface
 {
@@ -27,9 +28,11 @@ class FileLocator implements FileLocatorInterface
         $this->paths = (array) $paths;
     }
     /**
-     * @return string|array
+     * @return string|string[]
+     *
+     * @psalm-return ($first is true ? string : string[])
      */
-    public function locate(string $name, string $currentPath = null, bool $first = \true)
+    public function locate(string $name, ?string $currentPath = null, bool $first = \true)
     {
         if ('' === $name) {
             throw new \InvalidArgumentException('An empty file name is not valid to be located.');

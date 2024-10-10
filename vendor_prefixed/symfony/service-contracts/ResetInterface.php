@@ -22,6 +22,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Contracts\Service;
  * services, so that they can be used to handle several requests in the same
  * process loop (note that we advise making your services stateless instead of
  * implementing this interface when possible.)
+ * @internal
  */
 interface ResetInterface
 {

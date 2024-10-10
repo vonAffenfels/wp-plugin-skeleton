@@ -15,11 +15,12 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  * Node which only allows a finite set of values.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class EnumNode extends ScalarNode
 {
     private array $values;
-    public function __construct(?string $name, NodeInterface $parent = null, array $values = [], string $pathSeparator = BaseNode::DEFAULT_PATH_SEPARATOR)
+    public function __construct(?string $name, ?NodeInterface $parent = null, array $values = [], string $pathSeparator = BaseNode::DEFAULT_PATH_SEPARATOR)
     {
         if (!$values) {
             throw new \InvalidArgumentException('$values must contain at least one element.');

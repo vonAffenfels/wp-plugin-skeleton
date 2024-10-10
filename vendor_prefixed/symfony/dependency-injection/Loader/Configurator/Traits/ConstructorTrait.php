@@ -10,6 +10,7 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
+/** @internal */
 trait ConstructorTrait
 {
     /**

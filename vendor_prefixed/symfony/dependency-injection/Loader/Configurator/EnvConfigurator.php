@@ -11,6 +11,7 @@
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use WPPluginSkeleton_Vendor\Symfony\Component\Config\Loader\ParamConfigurator;
+/** @internal */
 class EnvConfigurator extends ParamConfigurator
 {
     /**

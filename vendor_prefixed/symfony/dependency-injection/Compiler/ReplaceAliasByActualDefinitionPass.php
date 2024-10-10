@@ -19,9 +19,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * aliases.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ReplaceAliasByActualDefinitionPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private array $replacements;
     /**
      * Process the Container to replace aliases with service definitions.

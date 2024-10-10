@@ -14,6 +14,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class DefaultsConfigurator extends AbstractServiceConfigurator
 {
@@ -23,7 +24,7 @@ class DefaultsConfigurator extends AbstractServiceConfigurator
     use Traits\PublicTrait;
     public const FACTORY = 'defaults';
     private ?string $path;
-    public function __construct(ServicesConfigurator $parent, Definition $definition, string $path = null)
+    public function __construct(ServicesConfigurator $parent, Definition $definition, ?string $path = null)
     {
         parent::__construct($parent, $definition, null, []);
         $this->path = $path;

@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Resource\ResourceInterface;
  * Interface for ConfigCache.
  *
  * @author Matthias Pigulla <mp@webfactory.de>
+ * @internal
  */
 interface ConfigCacheInterface
 {
@@ -39,5 +40,5 @@ interface ConfigCacheInterface
      *
      * @throws \RuntimeException When the cache file cannot be written
      */
-    public function write(string $content, array $metadata = null);
+    public function write(string $content, ?array $metadata = null);
 }

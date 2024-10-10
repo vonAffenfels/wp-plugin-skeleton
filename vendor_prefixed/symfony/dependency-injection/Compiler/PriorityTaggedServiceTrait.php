@@ -20,6 +20,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\TypedReference
  * Trait that allows a generic method to find and sort service by priority option in the tag.
  *
  * @author Iltar van der Berg <kjarli@gmail.com>
+ * @internal
  */
 trait PriorityTaggedServiceTrait
 {
@@ -75,7 +76,8 @@ trait PriorityTaggedServiceTrait
                 } elseif (null === $defaultIndex && $defaultPriorityMethod && $class) {
                     $defaultIndex = PriorityTaggedServiceUtil::getDefault($container, $serviceId, $class, $defaultIndexMethod ?? 'getDefaultName', $tagName, $indexAttribute, $checkTaggedItem);
                 }
-                $index ??= $defaultIndex ??= $serviceId;
+                $decorated = $definition->getTag('container.decorator')[0]['id'] ?? null;
+                $index = $index ?? $defaultIndex ?? ($defaultIndex = $decorated ?? $serviceId);
                 $services[] = [$priority, ++$i, $index, $serviceId, $class];
             }
         }
@@ -112,6 +114,9 @@ class PriorityTaggedServiceUtil
             foreach ($r->getAttributes(AsTaggedItem::class) as $attribute) {
                 return 'priority' === $indexAttribute ? $attribute->newInstance()->priority : $attribute->newInstance()->index;
             }
+            return null;
+        }
+        if ($r->isInterface()) {
             return null;
         }
         if (null !== $indexAttribute) {

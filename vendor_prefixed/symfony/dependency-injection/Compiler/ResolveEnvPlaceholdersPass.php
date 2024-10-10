@@ -13,9 +13,11 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 /**
  * Replaces env var placeholders by their current values.
+ * @internal
  */
 class ResolveEnvPlaceholdersPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \false;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         if (\is_string($value)) {

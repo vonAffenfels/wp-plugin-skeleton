@@ -22,6 +22,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  *   * floats
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ScalarNode extends VariableNode
 {

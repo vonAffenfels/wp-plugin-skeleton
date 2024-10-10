@@ -6,6 +6,7 @@ use ReflectionClass;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Setting\Attribute\AsSettingContainer;
+/** @internal */
 final class CompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container) : void

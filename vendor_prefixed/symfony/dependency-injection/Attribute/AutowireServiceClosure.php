@@ -14,6 +14,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument\Servi
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
 /**
  * Attribute to wrap a service in a closure that returns it.
+ * @internal
  */
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
 class AutowireServiceClosure extends Autowire

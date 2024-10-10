@@ -15,13 +15,14 @@ use WPPluginSkeleton_Vendor\Psr\Container\NotFoundExceptionInterface;
  * This exception is thrown when a non-existent service is requested.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ServiceNotFoundException extends InvalidArgumentException implements NotFoundExceptionInterface
 {
     private string $id;
     private ?string $sourceId;
     private array $alternatives;
-    public function __construct(string $id, string $sourceId = null, \Throwable $previous = null, array $alternatives = [], string $msg = null)
+    public function __construct(string $id, ?string $sourceId = null, ?\Throwable $previous = null, array $alternatives = [], ?string $msg = null)
     {
         if (null !== $msg) {
             // no-op

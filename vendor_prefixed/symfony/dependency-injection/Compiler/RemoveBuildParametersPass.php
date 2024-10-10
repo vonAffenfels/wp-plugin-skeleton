@@ -11,6 +11,7 @@
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler;
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
+/** @internal */
 class RemoveBuildParametersPass implements CompilerPassInterface
 {
     /**

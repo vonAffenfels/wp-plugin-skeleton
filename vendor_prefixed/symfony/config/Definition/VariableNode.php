@@ -18,6 +18,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  * Any PHP type is accepted as a value.
  *
  * @author Jeremy Mikola <jmikola@gmail.com>
+ * @internal
  */
 class VariableNode extends BaseNode implements PrototypeNodeInterface
 {

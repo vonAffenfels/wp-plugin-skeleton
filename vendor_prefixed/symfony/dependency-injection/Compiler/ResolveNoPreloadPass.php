@@ -17,10 +17,12 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * Propagate the "container.no_preload" tag.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ResolveNoPreloadPass extends AbstractRecursivePass
 {
     private const DO_PRELOAD_TAG = '.container.do_preload';
+    protected bool $skipScalars = \true;
     private array $resolvedIds = [];
     /**
      * @return void

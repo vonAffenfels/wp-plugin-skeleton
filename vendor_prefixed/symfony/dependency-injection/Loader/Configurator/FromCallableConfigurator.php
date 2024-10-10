@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\C
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class FromCallableConfigurator extends AbstractServiceConfigurator
 {

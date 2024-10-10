@@ -4,6 +4,7 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Menu;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
+/** @internal */
 final class Loader
 {
     public function __construct(private readonly WordpressKernel $kernel, private readonly BaseWordpress $base, private readonly array $menuData)

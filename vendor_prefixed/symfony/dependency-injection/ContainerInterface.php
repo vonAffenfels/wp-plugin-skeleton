@@ -19,6 +19,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Serv
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 interface ContainerInterface extends PsrContainerInterface
 {

@@ -10,11 +10,13 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter;
 
+use WPPluginSkeleton_Vendor\Symfony\Component\Serializer\Attribute\Ignore;
 use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Hydrator as PublicHydrator;
 use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Internal\Hydrator;
 use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Internal\LazyObjectRegistry as Registry;
 use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Internal\LazyObjectState;
 use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Internal\LazyObjectTrait;
+/** @internal */
 trait LazyProxyTrait
 {
     use LazyObjectTrait;
@@ -24,7 +26,7 @@ trait LazyProxyTrait
      * @param \Closure():object $initializer Returns the proxied object
      * @param static|null       $instance
      */
-    public static function createLazyProxy(\Closure $initializer, object $instance = null) : static
+    public static function createLazyProxy(\Closure $initializer, ?object $instance = null) : static
     {
         if (self::class !== ($class = $instance ? $instance::class : static::class)) {
             $skippedProperties = ["\x00" . self::class . "\x00lazyObjectState" => \true];
@@ -43,6 +45,7 @@ trait LazyProxyTrait
      *
      * @param $partial Whether partially initialized objects should be considered as initialized
      */
+    #[Ignore]
     public function isLazyObjectInitialized(bool $partial = \false) : bool
     {
         return !isset($this->lazyObjectState) || isset($this->lazyObjectState->realInstance) || Registry::$noInitializerState === $this->lazyObjectState->initializer;
@@ -238,7 +241,7 @@ trait LazyProxyTrait
         $scope = \get_parent_class($class);
         $data = [];
         foreach (parent::__sleep() as $name) {
-            $value = $properties[$k = $name] ?? $properties[$k = "\x00*\x00{$name}"] ?? $properties[$k = "\x00{$scope}\x00{$name}"] ?? ($k = null);
+            $value = $properties[$k = $name] ?? $properties[$k = "\x00*\x00{$name}"] ?? $properties[$k = "\x00{$class}\x00{$name}"] ?? $properties[$k = "\x00{$scope}\x00{$name}"] ?? ($k = null);
             if (null === $k) {
                 \trigger_error(\sprintf('serialize(): "%s" returned as member variable from __sleep() but does not exist', $name), \E_USER_NOTICE);
             } else {

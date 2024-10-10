@@ -10,12 +10,12 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Attribute;
 
-use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
+/** @internal */
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
-class TaggedIterator extends Autowire
+class TaggedIterator extends AutowireIterator
 {
     public function __construct(public string $tag, public ?string $indexAttribute = null, public ?string $defaultIndexMethod = null, public ?string $defaultPriorityMethod = null, public string|array $exclude = [], public bool $excludeSelf = \true)
     {
-        parent::__construct(new TaggedIteratorArgument($tag, $indexAttribute, $defaultIndexMethod, \false, $defaultPriorityMethod, (array) $exclude, $excludeSelf));
+        parent::__construct($tag, $indexAttribute, $defaultIndexMethod, $defaultPriorityMethod, $exclude, $excludeSelf);
     }
 }

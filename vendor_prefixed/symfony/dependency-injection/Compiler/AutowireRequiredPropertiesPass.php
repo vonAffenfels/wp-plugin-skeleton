@@ -19,9 +19,11 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\Attribute\Required;
  *
  * @author Sebastien Morel (Plopix) <morel.seb@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class AutowireRequiredPropertiesPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         $value = parent::processValue($value, $isRoot);

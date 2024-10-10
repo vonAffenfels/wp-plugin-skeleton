@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Yaml\Tag;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Guilhem N. <egetick@gmail.com>
+ * @internal
  */
 final class TaggedValue
 {

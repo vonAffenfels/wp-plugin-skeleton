@@ -10,6 +10,7 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Exception;
 
+/** @internal */
 interface ExceptionInterface extends \Throwable
 {
 }

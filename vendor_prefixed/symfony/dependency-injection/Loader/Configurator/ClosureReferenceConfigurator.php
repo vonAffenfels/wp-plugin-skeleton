@@ -10,6 +10,7 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator;
 
+/** @internal */
 class ClosureReferenceConfigurator extends ReferenceConfigurator
 {
 }

@@ -5,6 +5,8 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\Parameter;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\ParameterBag;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\ClassSystem;
+/** @internal */
 class ExtensionLoader
 {
     public function __construct(private readonly WordpressKernel $kernel, private readonly array $extensions)
@@ -16,20 +18,24 @@ class ExtensionLoader
             foreach ($extension['postTypes'] ?? [] as $postType) {
                 $hookName = 'vaf_wp_framework/post_type_ext/' . $postType . '/' . $extension['fieldName'];
                 $parameterBag = ParameterBag::fromArray($extension['params']);
-                add_filter($hookName, function (mixed $return, PostObject $post) use($parameterBag, $extension) : mixed {
+                add_filter($hookName, function (mixed $return, PostObject $post, array $parameters = []) use($parameterBag, $extension) : mixed {
                     $params = [];
                     /** @var Parameter $parameter */
                     foreach ($parameterBag->getParams() as $parameter) {
-                        if ($parameter->isServiceParam()) {
-                            $params[$parameter->getName()] = $this->kernel->getContainer()->get($parameter->getType());
-                        } elseif ($parameter->getType() === PostObject::class) {
+                        if ($parameter->getType() === 'string') {
+                            if (!empty($parameters)) {
+                                $params[$parameter->getName()] = \array_shift($parameters);
+                            }
+                        } elseif (ClassSystem::isExtendsOrImplements(PostObject::class, $parameter->getType())) {
                             $params[$parameter->getName()] = $post;
+                        } elseif ($parameter->isServiceParam()) {
+                            $params[$parameter->getName()] = $this->kernel->getContainer()->get($parameter->getType());
                         }
                     }
                     $method = $extension['method'];
                     $container = $this->kernel->getContainer()->get($extension['serviceId']);
                     return $container->{$method}(...$params);
-                }, 10, 2);
+                }, 10, 3);
             }
         }
     }

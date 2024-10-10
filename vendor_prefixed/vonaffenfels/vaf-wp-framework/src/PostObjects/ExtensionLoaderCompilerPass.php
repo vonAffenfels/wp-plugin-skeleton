@@ -13,8 +13,10 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Attributes\Field;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Attributes\PostTypeExtension;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\Parameter;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\ParameterBag;
+/** @internal */
 class ExtensionLoaderCompilerPass implements CompilerPassInterface
 {
+    private array $allowedTypes = ['string', PostObject::class];
     /**
      * @throws Exception
      */
@@ -66,7 +68,7 @@ class ExtensionLoaderCompilerPass implements CompilerPassInterface
                 if ($type instanceof ReflectionIntersectionType || $type instanceof ReflectionUnionType) {
                     throw new Exception(\sprintf('Parameter type for PostObjectExtension "%s" (field "%s") ' . 'can\'t be a union or intersection type!', $class, $fieldName));
                 }
-                if ($type->getName() !== PostObject::class && !$container->has($type->getName())) {
+                if (!\in_array($type->getName(), $this->allowedTypes) && !$container->has($type->getName())) {
                     throw new Exception(\sprintf('Parameter type "%s" for PostObjectExtension "%s" (field "%s") is not allowed. ' . 'Only %s or registered service classes are allowed', $type->getName(), $class, $fieldName, PostObject::class));
                 }
                 $isServiceParam = \false;
@@ -74,7 +76,7 @@ class ExtensionLoaderCompilerPass implements CompilerPassInterface
                     $container->findDefinition($type->getName())->setPublic(\true);
                     $isServiceParam = \true;
                 }
-                $parameterBag->addParam(new Parameter(name: $parameter->getName(), type: $type->getName(), isOptional: $parameter->isOptional(), default: $parameter->isOptional() ? $parameter->getDefaultValue() : null, isServiceParam: $isServiceParam));
+                $parameterBag->addParam(new Parameter(name: $parameter->getName(), type: $type->getName(), isOptional: $parameter->isOptional(), default: $parameter->isOptional() ? $parameter->getDefaultValue() : null, isServiceParam: $isServiceParam, isNullable: $parameter->allowsNull()));
             }
             $extensions[] = ['method' => $methodName, 'postTypes' => $postTypes, 'fieldName' => $fieldName, 'serviceId' => $class, 'params' => $parameterBag->toArray()];
         }

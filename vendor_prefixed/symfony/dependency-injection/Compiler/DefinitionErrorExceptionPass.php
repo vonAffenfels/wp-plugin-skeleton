@@ -20,11 +20,13 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * Throws an exception for any Definitions that have errors and still exist.
  *
  * @author Ryan Weaver <ryan@knpuniversity.com>
+ * @internal
  */
 class DefinitionErrorExceptionPass extends AbstractRecursivePass
 {
-    private $erroredDefinitions = [];
-    private $sourceReferences = [];
+    protected bool $skipScalars = \true;
+    private array $erroredDefinitions = [];
+    private array $sourceReferences = [];
     /**
      * @return void
      */

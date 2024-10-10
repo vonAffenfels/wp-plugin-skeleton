@@ -12,6 +12,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
 
 /**
  * Base LogicException for Dependency Injection component.
+ * @internal
  */
 class LogicException extends \LogicException implements ExceptionInterface
 {

@@ -23,10 +23,12 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ServiceLocator
  * Applies the "container.service_locator" tag by wrapping references into ServiceClosureArgument instances.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 final class ServiceLocatorTagPass extends AbstractRecursivePass
 {
     use PriorityTaggedServiceTrait;
+    protected bool $skipScalars = \true;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         if ($value instanceof ServiceLocatorArgument) {
@@ -79,7 +81,7 @@ final class ServiceLocatorTagPass extends AbstractRecursivePass
         $this->container->setDefinition($id, $value->setPublic(\false));
         return new Reference($id);
     }
-    public static function register(ContainerBuilder $container, array $map, string $callerId = null) : Reference
+    public static function register(ContainerBuilder $container, array $map, ?string $callerId = null) : Reference
     {
         foreach ($map as $k => $v) {
             $map[$k] = new ServiceClosureArgument($v);

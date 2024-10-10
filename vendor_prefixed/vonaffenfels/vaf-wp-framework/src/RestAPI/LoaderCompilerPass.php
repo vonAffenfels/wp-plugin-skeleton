@@ -11,6 +11,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler\Compi
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\RestAPI\Attribute\AsRestContainer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\RestAPI\Attribute\RestRoute;
+/** @internal */
 final class LoaderCompilerPass implements CompilerPassInterface
 {
     private array $allowedTypes = ['int', 'string', 'bool'];
@@ -83,7 +84,7 @@ final class LoaderCompilerPass implements CompilerPassInterface
                     $serviceParams[$parameter->getName()] = $type->getName();
                 }
             }
-            $data[] = ['callback' => $methodName, 'method' => $instance->method, 'uri' => $instance->uri, 'namespace' => $containerAttribute->namespace, 'params' => $params, 'paramsLower' => $paramsLower, 'paramsDefault' => $paramsDefault, 'paramTypes' => $paramTypes, 'serviceParams' => $serviceParams];
+            $data[] = ['callback' => $methodName, 'method' => $instance->method, 'uri' => $instance->uri, 'permission' => ['type' => $instance->requiredPermission !== null ? 'wordpress_permission' : 'none', ...$instance->requiredPermission !== null ? ['wordpress_permission_name' => $instance->requiredPermission] : []], 'namespace' => $containerAttribute->namespace, 'params' => $params, 'paramsLower' => $paramsLower, 'paramsDefault' => $paramsDefault, 'paramTypes' => $paramTypes, 'serviceParams' => $serviceParams];
         }
         return $data;
     }

@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Setting;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
+/** @internal */
 abstract class EnvAwareSetting extends Setting
 {
     private mixed $envValue;

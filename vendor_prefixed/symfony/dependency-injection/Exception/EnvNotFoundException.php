@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
  * This exception is thrown when an environment variable is not found.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class EnvNotFoundException extends InvalidArgumentException
 {

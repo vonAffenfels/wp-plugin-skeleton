@@ -25,6 +25,7 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\Attribute\SubscribedServic
  * injection is recommended.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 interface ServiceSubscriberInterface
 {

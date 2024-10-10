@@ -19,6 +19,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  *
  * @final
+ * @internal
  */
 class Configuration implements ConfigurationInterface
 {

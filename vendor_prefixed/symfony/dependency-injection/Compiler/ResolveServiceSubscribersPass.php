@@ -18,9 +18,11 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\ServiceProviderInterface;
  * Compiler pass to inject their service locator to service subscribers.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ResolveServiceSubscribersPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private ?string $serviceLocator = null;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {

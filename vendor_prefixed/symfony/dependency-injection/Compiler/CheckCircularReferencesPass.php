@@ -21,6 +21,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Serv
  * Circular reference from method calls will only be detected at run-time.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class CheckCircularReferencesPass implements CompilerPassInterface
 {

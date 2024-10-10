@@ -19,6 +19,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Runt
  * Applies instanceof conditionals to definitions.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ResolveInstanceofConditionalsPass implements CompilerPassInterface
 {

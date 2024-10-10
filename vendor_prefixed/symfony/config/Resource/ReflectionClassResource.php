@@ -17,6 +17,7 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\ServiceSubscriberInterface
  * @author Nicolas Grekas <p@tchwork.com>
  *
  * @final
+ * @internal
  */
 class ReflectionClassResource implements SelfCheckingResourceInterface
 {

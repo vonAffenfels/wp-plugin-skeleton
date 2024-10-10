@@ -10,6 +10,7 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\Parameter;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\System\Parameters\ParameterBag;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Capabilities;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\HttpResponseCodes;
+/** @internal */
 final class Loader
 {
     public function __construct(private readonly WordpressKernel $kernel, private readonly BaseWordpress $base, private readonly array $adminAjaxContainer, private readonly Request $request)
@@ -46,18 +47,20 @@ final class Loader
                             wp_die();
                         }
                         $value = $this->request->getParam($name, Request::TYPE_POST, $parameter->getDefault());
-                        # Handle type
-                        switch ($parameter->getType()) {
-                            case 'int':
-                                $value = (int) $value;
-                                break;
-                            case 'bool':
-                                $value = \in_array(\strtolower($value), ['1', 'on', 'true']);
-                                break;
-                            case 'string':
-                            default:
-                                # Nothing to do as $value is already a string
-                                break;
+                        if (!($parameter->isNullable() && \is_null($value))) {
+                            # Handle type
+                            switch ($parameter->getType()) {
+                                case 'int':
+                                    $value = (int) $value;
+                                    break;
+                                case 'bool':
+                                    $value = \in_array(\strtolower($value), ['1', 'on', 'true']);
+                                    break;
+                                case 'string':
+                                default:
+                                    # Nothing to do as $value is already a string
+                                    break;
+                            }
                         }
                         $params[$parameter->getName()] = $value;
                     }

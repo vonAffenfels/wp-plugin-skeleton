@@ -16,10 +16,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Inva
  * IniFileLoader loads parameters from INI files.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class IniFileLoader extends FileLoader
 {
-    public function load(mixed $resource, string $type = null) : mixed
+    public function load(mixed $resource, ?string $type = null) : mixed
     {
         $path = $this->locator->locate($resource);
         $this->container->fileExists($path);
@@ -46,7 +47,7 @@ class IniFileLoader extends FileLoader
         }
         return null;
     }
-    public function supports(mixed $resource, string $type = null) : bool
+    public function supports(mixed $resource, ?string $type = null) : bool
     {
         if (!\is_string($resource)) {
             return \false;

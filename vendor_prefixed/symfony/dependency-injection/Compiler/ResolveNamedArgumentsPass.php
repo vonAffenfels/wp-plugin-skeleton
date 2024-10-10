@@ -19,9 +19,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\ProxyHelper;
  * Resolves named arguments to their corresponding numeric index.
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
+ * @internal
  */
 class ResolveNamedArgumentsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         if ($value instanceof AbstractArgument && $value->getText() . '.' === $value->getTextWithContext()) {

@@ -16,11 +16,12 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Filesystem\Exception;
  * @author Romain Neutron <imprec@gmail.com>
  * @author Christian Gärtner <christiangaertner.film@googlemail.com>
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class IOException extends \RuntimeException implements IOExceptionInterface
 {
     private ?string $path;
-    public function __construct(string $message, int $code = 0, \Throwable $previous = null, string $path = null)
+    public function __construct(string $message, int $code = 0, ?\Throwable $previous = null, ?string $path = null)
     {
         $this->path = $path;
         parent::__construct($message, $code, $previous);

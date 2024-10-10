@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Contracts\Service\Test;
 if (\false) {
     /**
      * @deprecated since PHPUnit 9.6
+     * @internal
      */
     class ServiceLocatorTest
     {

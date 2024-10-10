@@ -2,11 +2,16 @@
 
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook;
 
+use ReflectionAttribute;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook\Attribute\Hook;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook\Attribute\PreventAutowiring;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Collection;
+/** @internal */
 final class LoaderCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container) : void
@@ -40,13 +45,10 @@ final class LoaderCompilerPass implements CompilerPassInterface
             $serviceParams = [];
             foreach ($method->getParameters() as $paramIdx => $parameter) {
                 $type = $parameter->getType();
-                if (\is_null($type)) {
-                    continue;
-                }
-                if ($container->has($type->getName())) {
+                if (Collection::make($parameter->getAttributes())->doesNotContain(fn(ReflectionAttribute $attribute) => $attribute->newInstance() instanceof PreventAutowiring) && $type instanceof ReflectionNamedType && $container->has($type->getName())) {
                     # We found a service parameter
                     # So reduce number of parameters of hook by one
-                    # And register the service parameter
+                    # and register the service parameter
                     $numParameters--;
                     $serviceParams[$paramIdx] = $type->getName();
                     $container->findDefinition($type->getName())->setPublic(\true);
@@ -54,7 +56,7 @@ final class LoaderCompilerPass implements CompilerPassInterface
             }
             foreach ($attributes as $attribute) {
                 $instance = $attribute->newInstance();
-                $data[$instance->hook] = ['method' => $methodName, 'priority' => $instance->priority, 'numParams' => $numParameters, 'serviceParams' => $serviceParams];
+                $data[] = ['hook' => $instance->hook, 'method' => $methodName, 'priority' => $instance->priority, 'numParams' => $numParameters, 'serviceParams' => $serviceParams];
             }
         }
         return $data;

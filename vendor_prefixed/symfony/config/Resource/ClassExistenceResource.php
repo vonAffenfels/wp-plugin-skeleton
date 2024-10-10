@@ -19,6 +19,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Resource;
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @final
+ * @internal
  */
 class ClassExistenceResource implements SelfCheckingResourceInterface
 {
@@ -31,7 +32,7 @@ class ClassExistenceResource implements SelfCheckingResourceInterface
      * @param string    $resource The fully-qualified class name
      * @param bool|null $exists   Boolean when the existence check has already been done
      */
-    public function __construct(string $resource, bool $exists = null)
+    public function __construct(string $resource, ?bool $exists = null)
     {
         $this->resource = $resource;
         if (null !== $exists) {
@@ -101,7 +102,7 @@ class ClassExistenceResource implements SelfCheckingResourceInterface
     /**
      * @internal
      */
-    public function __wakeup()
+    public function __wakeup() : void
     {
         if (\is_bool($this->exists)) {
             $this->exists = [$this->exists, null];
@@ -123,7 +124,7 @@ class ClassExistenceResource implements SelfCheckingResourceInterface
      *
      * @internal
      */
-    public static function throwOnRequiredClass(string $class, \Exception $previous = null) : void
+    public static function throwOnRequiredClass(string $class, ?\Exception $previous = null) : void
     {
         // If the passed class is the resource being checked, we shouldn't throw.
         if (null === $previous && self::$autoloadedClass === $class) {

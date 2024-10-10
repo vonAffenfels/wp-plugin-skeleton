@@ -24,6 +24,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ParameterBag\P
  * Merges extension configs into the container builder.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class MergeExtensionConfigurationPass implements CompilerPassInterface
 {
@@ -135,7 +136,7 @@ class MergeExtensionConfigurationParameterBag extends EnvPlaceholderParameterBag
 class MergeExtensionConfigurationContainerBuilder extends ContainerBuilder
 {
     private string $extensionClass;
-    public function __construct(ExtensionInterface $extension, ParameterBagInterface $parameterBag = null)
+    public function __construct(ExtensionInterface $extension, ?ParameterBagInterface $parameterBag = null)
     {
         parent::__construct($parameterBag);
         $this->extensionClass = $extension::class;
@@ -152,7 +153,7 @@ class MergeExtensionConfigurationContainerBuilder extends ContainerBuilder
     {
         throw new LogicException(\sprintf('Cannot compile the container in extension "%s".', $this->extensionClass));
     }
-    public function resolveEnvPlaceholders(mixed $value, string|bool $format = null, array &$usedEnvs = null) : mixed
+    public function resolveEnvPlaceholders(mixed $value, string|bool|null $format = null, ?array &$usedEnvs = null) : mixed
     {
         if (\true !== $format || !\is_string($value)) {
             return parent::resolveEnvPlaceholders($value, $format, $usedEnvs);

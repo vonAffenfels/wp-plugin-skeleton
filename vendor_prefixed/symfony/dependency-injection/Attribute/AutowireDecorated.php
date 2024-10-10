@@ -10,6 +10,7 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Attribute;
 
+/** @internal */
 #[\Attribute(\Attribute::TARGET_PARAMETER)]
 class AutowireDecorated
 {

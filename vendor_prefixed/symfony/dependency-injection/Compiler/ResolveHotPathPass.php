@@ -18,9 +18,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * Propagate "container.hot_path" tags to referenced services.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ResolveHotPathPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private array $resolvedIds = [];
     /**
      * @return void

@@ -27,6 +27,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Martin Hasoň <martin.hason@gmail.com>
+ * @internal
  */
 class XmlDumper extends Dumper
 {
@@ -119,15 +120,16 @@ class XmlDumper extends Dumper
         foreach ($tags as $name => $tags) {
             foreach ($tags as $attributes) {
                 $tag = $this->document->createElement('tag');
-                if (!\array_key_exists('name', $attributes)) {
-                    $tag->setAttribute('name', $name);
-                } else {
-                    $tag->appendChild($this->document->createTextNode($name));
-                }
                 // Check if we have recursive attributes
                 if (\array_filter($attributes, \is_array(...))) {
+                    $tag->setAttribute('name', $name);
                     $this->addTagRecursiveAttributes($tag, $attributes);
                 } else {
+                    if (!\array_key_exists('name', $attributes)) {
+                        $tag->setAttribute('name', $name);
+                    } else {
+                        $tag->appendChild($this->document->createTextNode($name));
+                    }
                     foreach ($attributes as $key => $value) {
                         $tag->setAttribute($key, $value ?? '');
                     }

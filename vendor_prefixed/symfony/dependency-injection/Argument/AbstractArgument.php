@@ -12,6 +12,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument
 
 /**
  * Represents an abstract service argument, which have to be set by a compiler pass or a DI extension.
+ * @internal
  */
 final class AbstractArgument
 {

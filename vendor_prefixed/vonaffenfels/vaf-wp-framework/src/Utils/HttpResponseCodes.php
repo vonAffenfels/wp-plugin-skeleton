@@ -2,6 +2,7 @@
 
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils;
 
+/** @internal */
 enum HttpResponseCodes : int
 {
     # 4xx

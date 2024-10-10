@@ -15,6 +15,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
  *
  * @author Nicolas Grekas <p@tchwork.com>
  * @author Julien Maulny <jmaulny@darkmira.fr>
+ * @internal
  */
 class InvalidParameterTypeException extends InvalidArgumentException
 {

@@ -15,6 +15,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception;
  * internally to signal the parent scope to unset a key.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class UnsetKeyException extends Exception
 {

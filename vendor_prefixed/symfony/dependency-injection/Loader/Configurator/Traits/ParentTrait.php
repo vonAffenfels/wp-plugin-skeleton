@@ -12,6 +12,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\C
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ChildDefinition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+/** @internal */
 trait ParentTrait
 {
     /**

@@ -16,9 +16,11 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\Attribute\Required;
  * Looks for definitions with autowiring enabled and registers their corresponding "#[Required]" methods as setters.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class AutowireRequiredMethodsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         $value = parent::processValue($value, $isRoot);

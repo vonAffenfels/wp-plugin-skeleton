@@ -21,6 +21,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Logi
  * Provides useful features shared by many extensions.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 abstract class Extension implements ExtensionInterface, ConfigurationExtensionInterface
 {

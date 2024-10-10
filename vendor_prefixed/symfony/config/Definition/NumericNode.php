@@ -15,12 +15,13 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Exception\Invali
  * This node represents a numeric value in the config tree.
  *
  * @author David Jeanmonod <david.jeanmonod@gmail.com>
+ * @internal
  */
 class NumericNode extends ScalarNode
 {
     protected $min;
     protected $max;
-    public function __construct(?string $name, NodeInterface $parent = null, int|float $min = null, int|float $max = null, string $pathSeparator = BaseNode::DEFAULT_PATH_SEPARATOR)
+    public function __construct(?string $name, ?NodeInterface $parent = null, int|float|null $min = null, int|float|null $max = null, string $pathSeparator = BaseNode::DEFAULT_PATH_SEPARATOR)
     {
         parent::__construct($name, $parent, $pathSeparator);
         $this->min = $min;

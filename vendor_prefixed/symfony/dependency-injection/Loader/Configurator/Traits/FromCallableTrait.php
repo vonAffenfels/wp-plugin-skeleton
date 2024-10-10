@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Inva
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\FromCallableConfigurator;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
+/** @internal */
 trait FromCallableTrait
 {
     public final function fromCallable(string|array|ReferenceConfigurator|Expression $callable) : FromCallableConfigurator

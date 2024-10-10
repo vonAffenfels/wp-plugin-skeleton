@@ -20,9 +20,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * - target definitions are not abstract
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class CheckReferenceValidityPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {
         if ($isRoot && $value instanceof Definition && ($value->isSynthetic() || $value->isAbstract())) {

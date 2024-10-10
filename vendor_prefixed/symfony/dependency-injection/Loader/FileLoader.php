@@ -30,6 +30,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Logi
  * FileLoader is the abstract class used by all built-in loaders that are file based.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 abstract class FileLoader extends BaseFileLoader
 {
@@ -42,7 +43,7 @@ abstract class FileLoader extends BaseFileLoader
     /** @var array<string, Alias> */
     protected $aliases = [];
     protected $autoRegisterAliasesForSinglyImplementedInterfaces = \true;
-    public function __construct(ContainerBuilder $container, FileLocatorInterface $locator, string $env = null)
+    public function __construct(ContainerBuilder $container, FileLocatorInterface $locator, ?string $env = null)
     {
         $this->container = $container;
         parent::__construct($locator, $env);
@@ -50,7 +51,7 @@ abstract class FileLoader extends BaseFileLoader
     /**
      * @param bool|string $ignoreErrors Whether errors should be ignored; pass "not_found" to ignore only when the loaded resource is not found
      */
-    public function import(mixed $resource, string $type = null, bool|string $ignoreErrors = \false, string $sourceResource = null, $exclude = null) : mixed
+    public function import(mixed $resource, ?string $type = null, bool|string $ignoreErrors = \false, ?string $sourceResource = null, $exclude = null) : mixed
     {
         $args = \func_get_args();
         if ($ignoreNotFound = 'not_found' === $ignoreErrors) {
@@ -86,7 +87,7 @@ abstract class FileLoader extends BaseFileLoader
      *
      * @return void
      */
-    public function registerClasses(Definition $prototype, string $namespace, string $resource, string|array $exclude = null)
+    public function registerClasses(Definition $prototype, string $namespace, string $resource, string|array|null $exclude = null)
     {
         if (!\str_ends_with($namespace, '\\')) {
             throw new InvalidArgumentException(\sprintf('Namespace prefix must end with a "\\": "%s".', $namespace));
@@ -106,8 +107,19 @@ abstract class FileLoader extends BaseFileLoader
         $autoconfigureAttributes = new RegisterAutoconfigureAttributesPass();
         $autoconfigureAttributes = $autoconfigureAttributes->accept($prototype) ? $autoconfigureAttributes : null;
         $classes = $this->findClasses($namespace, $resource, (array) $exclude, $autoconfigureAttributes, $source);
-        // prepare for deep cloning
-        $serializedPrototype = \serialize($prototype);
+        $getPrototype = static fn() => clone $prototype;
+        $serialized = \serialize($prototype);
+        // avoid deep cloning if no definitions are nested
+        if (\strpos($serialized, 'O:48:"Symfony\\Component\\DependencyInjection\\Definition"', 55) || \strpos($serialized, 'O:53:"Symfony\\Component\\DependencyInjection\\ChildDefinition"', 55)) {
+            // prepare for deep cloning
+            foreach (['Arguments', 'Properties', 'MethodCalls', 'Configurator', 'Factory', 'Bindings'] as $key) {
+                $serialized = \serialize($prototype->{'get' . $key}());
+                if (\strpos($serialized, 'O:48:"Symfony\\Component\\DependencyInjection\\Definition"') || \strpos($serialized, 'O:53:"Symfony\\Component\\DependencyInjection\\ChildDefinition"')) {
+                    $getPrototype = static fn() => $getPrototype()->{'set' . $key}(\unserialize($serialized));
+                }
+            }
+        }
+        unset($serialized);
         foreach ($classes as $class => $errorMessage) {
             if (null === $errorMessage && $autoconfigureAttributes) {
                 $r = $this->container->getReflectionClass($class);
@@ -132,7 +144,7 @@ abstract class FileLoader extends BaseFileLoader
             if (\interface_exists($class, \false)) {
                 $this->interfaces[] = $class;
             } else {
-                $this->setDefinition($class, $definition = \unserialize($serializedPrototype));
+                $this->setDefinition($class, $definition = $getPrototype());
                 if (null !== $errorMessage) {
                     $definition->addError($errorMessage);
                     continue;

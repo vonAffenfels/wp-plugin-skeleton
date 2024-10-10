@@ -5,6 +5,7 @@ namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Template\Attribute\IsTemplate;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Template\Template;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\NoticeType;
+/** @internal */
 #[IsTemplate(templateFile: '@vaf-wp-framework/admin/notice')]
 final class Notice extends Template
 {

@@ -10,12 +10,14 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Internal;
 
+use WPPluginSkeleton_Vendor\Symfony\Component\Serializer\Attribute\Ignore;
 if (\PHP_VERSION_ID >= 80300) {
     /**
      * @internal
      */
     trait LazyObjectTrait
     {
+        #[Ignore]
         private readonly LazyObjectState $lazyObjectState;
     }
 } else {
@@ -24,6 +26,7 @@ if (\PHP_VERSION_ID >= 80300) {
      */
     trait LazyObjectTrait
     {
+        #[Ignore]
         private LazyObjectState $lazyObjectState;
     }
 }

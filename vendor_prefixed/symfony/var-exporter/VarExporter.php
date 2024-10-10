@@ -24,6 +24,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Internal\Values;
  * By leveraging OPcache, the generated PHP code is faster than doing the same with unserialize().
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 final class VarExporter
 {
@@ -35,7 +36,7 @@ final class VarExporter
      *
      * @throws ExceptionInterface When the provided value cannot be serialized
      */
-    public static function export(mixed $value, bool &$isStaticValue = null, array &$foundClasses = []) : string
+    public static function export(mixed $value, ?bool &$isStaticValue = null, array &$foundClasses = []) : string
     {
         $isStaticValue = \true;
         if (!\is_object($value) && !(\is_array($value) && $value) && !\is_resource($value) || $value instanceof \UnitEnum) {
@@ -73,7 +74,7 @@ final class VarExporter
         }
         \ksort($states);
         $wakeups = [null];
-        foreach ($states as $k => $v) {
+        foreach ($states as $v) {
             if (\is_array($v)) {
                 $wakeups[-$v[0]] = $v[1];
             } else {

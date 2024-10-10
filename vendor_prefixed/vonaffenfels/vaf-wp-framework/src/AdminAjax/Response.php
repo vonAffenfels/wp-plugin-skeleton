@@ -2,6 +2,7 @@
 
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminAjax;
 
+/** @internal */
 final class Response
 {
     public function __construct(private readonly bool $success, private readonly array $data = [], private readonly string $message = '')

@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 /**
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @internal
  */
 interface ConfigurableInterface
 {

@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Hook;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
+/** @internal */
 final class Loader
 {
     public function __construct(private readonly WordpressKernel $kernel, private readonly array $hookContainer)
@@ -11,7 +12,8 @@ final class Loader
     public function registerHooks() : void
     {
         foreach ($this->hookContainer as $serviceId => $hookContainer) {
-            foreach ($hookContainer as $hook => $data) {
+            foreach ($hookContainer as $data) {
+                $hook = $data['hook'];
                 add_filter($hook, function (...$args) use($serviceId, $data) {
                     $params = [];
                     for ($i = 0; $i <= \array_key_last($data['serviceParams']); $i++) {

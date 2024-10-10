@@ -19,10 +19,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\YamlFil
  * and don't have the "container.ignore_attributes" tag.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 final class RegisterAutoconfigureAttributesPass implements CompilerPassInterface
 {
-    private static $registerForAutoconfiguration;
+    private static \Closure $registerForAutoconfiguration;
     public function process(ContainerBuilder $container) : void
     {
         foreach ($container->getDefinitions() as $id => $definition) {
@@ -43,7 +44,7 @@ final class RegisterAutoconfigureAttributesPass implements CompilerPassInterface
     }
     private static function registerForAutoconfiguration(ContainerBuilder $container, \ReflectionClass $class, \ReflectionAttribute $attribute) : void
     {
-        if (self::$registerForAutoconfiguration) {
+        if (isset(self::$registerForAutoconfiguration)) {
             (self::$registerForAutoconfiguration)($container, $class, $attribute);
             return;
         }

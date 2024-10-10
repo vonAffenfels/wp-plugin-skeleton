@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection;
  * Parameter represents a parameter reference.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class Parameter
 {

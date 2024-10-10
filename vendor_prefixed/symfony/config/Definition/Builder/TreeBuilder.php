@@ -15,12 +15,19 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\NodeInterface;
  * This is the entry class for building a config tree.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class TreeBuilder implements NodeParentInterface
 {
+    /**
+     * @var NodeInterface|null
+     */
     protected $tree;
+    /**
+     * @var NodeDefinition
+     */
     protected $root;
-    public function __construct(string $name, string $type = 'array', NodeBuilder $builder = null)
+    public function __construct(string $name, string $type = 'array', ?NodeBuilder $builder = null)
     {
         $builder ??= new NodeBuilder();
         $this->root = $builder->node($name, $type)->setParent($this);
@@ -39,10 +46,7 @@ class TreeBuilder implements NodeParentInterface
      */
     public function buildTree() : NodeInterface
     {
-        if (null !== $this->tree) {
-            return $this->tree;
-        }
-        return $this->tree = $this->root->getNode(\true);
+        return $this->tree ??= $this->root->getNode(\true);
     }
     /**
      * @return void

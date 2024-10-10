@@ -11,6 +11,7 @@
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Attribute;
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerInterface;
+/** @internal */
 #[\Attribute(\Attribute::TARGET_CLASS)]
 class AsDecorator
 {

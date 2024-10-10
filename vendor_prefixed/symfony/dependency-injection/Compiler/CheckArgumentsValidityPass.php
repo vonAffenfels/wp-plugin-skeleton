@@ -17,9 +17,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Runt
  *
  * @author Kévin Dunglas <dunglas@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class CheckArgumentsValidityPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private bool $throwExceptions;
     public function __construct(bool $throwExceptions = \true)
     {

@@ -51,6 +51,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\ExpressionFunct
  * ContainerBuilder is a DI container that provides an API to easily describe services.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class ContainerBuilder extends Container implements TaggedContainerInterface
 {
@@ -103,7 +104,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      */
     private array $vendors;
     /**
-     * @var string[] the list of paths in vendor directories
+     * @var array<string, bool> the cache for paths being in vendor directories
      */
     private array $pathsInVendor = [];
     /**
@@ -123,7 +124,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      */
     private array $removedBindingIds = [];
     private const INTERNAL_TYPES = ['int' => \true, 'float' => \true, 'string' => \true, 'bool' => \true, 'resource' => \true, 'object' => \true, 'array' => \true, 'null' => \true, 'callable' => \true, 'iterable' => \true, 'mixed' => \true];
-    public function __construct(ParameterBagInterface $parameterBag = null)
+    public function __construct(?ParameterBagInterface $parameterBag = null)
     {
         parent::__construct($parameterBag);
         $this->trackResources = \interface_exists(ResourceInterface::class);
@@ -362,7 +363,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      * @throws BadMethodCallException When this ContainerBuilder is compiled
      * @throws \LogicException        if the extension is not registered
      */
-    public function loadFromExtension(string $extension, array $values = null) : static
+    public function loadFromExtension(string $extension, ?array $values = null) : static
     {
         if ($this->isCompiled()) {
             throw new BadMethodCallException('Cannot load from an extension on a compiled container.');
@@ -446,7 +447,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
         }
         return $this->doGet($id, $invalidBehavior);
     }
-    private function doGet(string $id, int $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, array &$inlineServices = null, bool $isConstructorArgument = \false) : mixed
+    private function doGet(string $id, int $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, ?array &$inlineServices = null, bool $isConstructorArgument = \false) : mixed
     {
         if (isset($inlineServices[$id])) {
             return $inlineServices[$id];
@@ -764,7 +765,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      * This methods allows for simple registration of service definition
      * with a fluid interface.
      */
-    public function register(string $id, string $class = null) : Definition
+    public function register(string $id, ?string $class = null) : Definition
     {
         return $this->setDefinition($id, new Definition($class));
     }
@@ -774,7 +775,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      * This method implements a shortcut for using setDefinition() with
      * an autowired definition.
      */
-    public function autowire(string $id, string $class = null) : Definition
+    public function autowire(string $id, ?string $class = null) : Definition
     {
         return $this->setDefinition($id, (new Definition($class))->setAutowired(\true));
     }
@@ -876,7 +877,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      * @throws RuntimeException         When the service is a synthetic service
      * @throws InvalidArgumentException When configure callable is not callable
      */
-    private function createService(Definition $definition, array &$inlineServices, bool $isConstructorArgument = \false, string $id = null, bool|object $tryProxy = \true) : mixed
+    private function createService(Definition $definition, array &$inlineServices, bool $isConstructorArgument = \false, ?string $id = null, bool|object $tryProxy = \true) : mixed
     {
         if (null === $id && isset($inlineServices[$h = \spl_object_hash($definition)])) {
             return $inlineServices[$h];
@@ -1166,13 +1167,19 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      * "$fooBar"-named arguments with $type as type-hint. Such arguments will
      * receive the service $id when autowiring is used.
      */
-    public function registerAliasForArgument(string $id, string $type, string $name = null) : Alias
+    public function registerAliasForArgument(string $id, string $type, ?string $name = null) : Alias
     {
-        $name = (new Target($name ?? $id))->name;
-        if (!\preg_match('/^[a-zA-Z_\\x7f-\\xff]/', $name)) {
-            throw new InvalidArgumentException(\sprintf('Invalid argument name "%s" for service "%s": the first character must be a letter.', $name, $id));
+        $parsedName = (new Target($name ??= $id))->getParsedName();
+        if (!\preg_match('/^[a-zA-Z_\\x7f-\\xff]/', $parsedName)) {
+            if ($id !== $name) {
+                $id = \sprintf(' for service "%s"', $id);
+            }
+            throw new InvalidArgumentException(\sprintf('Invalid argument name "%s"' . $id . ': the first character must be a letter.', $name));
         }
-        return $this->setAlias($type . ' $' . $name, $id);
+        if ($parsedName !== $name) {
+            $this->setAlias('.' . $type . ' $' . $name, $type . ' $' . $parsedName);
+        }
+        return $this->setAlias($type . ' $' . $parsedName, $id);
     }
     /**
      * Returns an array of ChildDefinition[] keyed by interface.
@@ -1200,7 +1207,7 @@ class ContainerBuilder extends Container implements TaggedContainerInterface
      *
      * @return mixed The value with env parameters resolved if a string or an array is passed
      */
-    public function resolveEnvPlaceholders(mixed $value, string|bool $format = null, array &$usedEnvs = null) : mixed
+    public function resolveEnvPlaceholders(mixed $value, string|bool|null $format = null, ?array &$usedEnvs = null) : mixed
     {
         $bag = $this->getParameterBag();
         if (\true === ($format ??= '%%env(%s)%%')) {

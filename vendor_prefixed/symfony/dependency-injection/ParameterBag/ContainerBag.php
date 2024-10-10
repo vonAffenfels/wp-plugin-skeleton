@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Paramete
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Container;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ContainerBag extends FrozenParameterBag implements ContainerBagInterface
 {

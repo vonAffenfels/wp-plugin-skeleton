@@ -13,6 +13,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument\BoundArgument;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument\ServiceLocatorArgument;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument\TaggedIteratorArgument;
+use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Attribute\Autowire;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Attribute\Target;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
@@ -23,9 +24,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\TypedReference
 use WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\ProxyHelper;
 /**
  * @author Guilhem Niot <guilhem.niot@gmail.com>
+ * @internal
  */
 class ResolveBindingsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private array $usedBindings = [];
     private array $unusedBindings = [];
     private array $errorMessages = [];
@@ -153,21 +156,24 @@ class ResolveBindingsPass extends AbstractRecursivePass
                 if (\array_key_exists($parameter->name, $arguments) && '' !== $arguments[$parameter->name]) {
                     continue;
                 }
+                if ($value->isAutowired() && !$value->hasTag('container.ignore_attributes') && $parameter->getAttributes(Autowire::class, \ReflectionAttribute::IS_INSTANCEOF)) {
+                    continue;
+                }
                 $typeHint = \ltrim(ProxyHelper::exportType($parameter) ?? '', '?');
-                $name = Target::parseName($parameter);
-                if ($typeHint && \array_key_exists($k = \preg_replace('/(^|[(|&])\\\\/', '\\1', $typeHint) . ' $' . $name, $bindings)) {
+                $name = Target::parseName($parameter, parsedName: $parsedName);
+                if ($typeHint && (\array_key_exists($k = \preg_replace('/(^|[(|&])\\\\/', '\\1', $typeHint) . ' $' . $name, $bindings) || \array_key_exists($k = \preg_replace('/(^|[(|&])\\\\/', '\\1', $typeHint) . ' $' . $parsedName, $bindings))) {
                     $arguments[$key] = $this->getBindingValue($bindings[$k]);
                     continue;
                 }
-                if (\array_key_exists('$' . $name, $bindings)) {
-                    $arguments[$key] = $this->getBindingValue($bindings['$' . $name]);
+                if (\array_key_exists($k = '$' . $name, $bindings) || \array_key_exists($k = '$' . $parsedName, $bindings)) {
+                    $arguments[$key] = $this->getBindingValue($bindings[$k]);
                     continue;
                 }
                 if ($typeHint && '\\' === $typeHint[0] && isset($bindings[$typeHint = \substr($typeHint, 1)])) {
                     $arguments[$key] = $this->getBindingValue($bindings[$typeHint]);
                     continue;
                 }
-                if (isset($bindingNames[$name]) || isset($bindingNames[$parameter->name])) {
+                if (isset($bindingNames[$name]) || isset($bindingNames[$parsedName]) || isset($bindingNames[$parameter->name])) {
                     $bindingKey = \array_search($binding, $bindings, \true);
                     $argumentType = \substr($bindingKey, 0, \strpos($bindingKey, ' '));
                     $this->errorMessages[] = \sprintf('Did you forget to add the type "%s" to argument "$%s" of method "%s::%s()"?', $argumentType, $parameter->name, $reflectionMethod->class, $reflectionMethod->name);

@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Builder;
  * This class builds validation conditions.
  *
  * @author Christophe Coevoet <stof@notk.org>
+ * @internal
  */
 class ValidationBuilder
 {
@@ -28,7 +29,7 @@ class ValidationBuilder
      *
      * @return ExprBuilder|$this
      */
-    public function rule(\Closure $closure = null) : ExprBuilder|static
+    public function rule(?\Closure $closure = null) : ExprBuilder|static
     {
         if (null !== $closure) {
             $this->rules[] = $closure;

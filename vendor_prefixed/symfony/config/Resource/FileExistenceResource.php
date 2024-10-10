@@ -19,6 +19,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Resource;
  * @author Charles-Henri Bruyand <charleshenri.bruyand@gmail.com>
  *
  * @final
+ * @internal
  */
 class FileExistenceResource implements SelfCheckingResourceInterface
 {
@@ -34,7 +35,7 @@ class FileExistenceResource implements SelfCheckingResourceInterface
     }
     public function __toString() : string
     {
-        return $this->resource;
+        return 'existence.' . $this->resource;
     }
     public function getResource() : string
     {

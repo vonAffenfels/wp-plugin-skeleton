@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Builder\TreeBuil
  * Configuration interface.
  *
  * @author Victor Berchet <victor@suumit.com>
+ * @internal
  */
 interface ConfigurationInterface
 {

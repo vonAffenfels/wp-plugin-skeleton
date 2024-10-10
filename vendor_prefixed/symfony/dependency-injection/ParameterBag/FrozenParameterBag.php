@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Logi
  * Holds read-only parameters.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class FrozenParameterBag extends ParameterBag
 {

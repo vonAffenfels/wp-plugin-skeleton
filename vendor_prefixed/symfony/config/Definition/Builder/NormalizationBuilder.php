@@ -14,6 +14,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Builder;
  * This class builds normalization conditions.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class NormalizationBuilder
 {
@@ -33,7 +34,7 @@ class NormalizationBuilder
      *
      * @return $this
      */
-    public function remap(string $key, string $plural = null) : static
+    public function remap(string $key, ?string $plural = null) : static
     {
         $this->remappings[] = [$key, null === $plural ? $key . 's' : $plural];
         return $this;
@@ -43,7 +44,7 @@ class NormalizationBuilder
      *
      * @return ExprBuilder|$this
      */
-    public function before(\Closure $closure = null) : ExprBuilder|static
+    public function before(?\Closure $closure = null) : ExprBuilder|static
     {
         if (null !== $closure) {
             $this->before[] = $closure;

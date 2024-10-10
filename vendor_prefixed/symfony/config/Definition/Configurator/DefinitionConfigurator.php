@@ -16,13 +16,14 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Builder\TreeBuil
 use WPPluginSkeleton_Vendor\Symfony\Component\Config\Definition\Loader\DefinitionFileLoader;
 /**
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @internal
  */
 class DefinitionConfigurator
 {
     public function __construct(private TreeBuilder $treeBuilder, private DefinitionFileLoader $loader, private string $path, private string $file)
     {
     }
-    public function import(string $resource, string $type = null, bool $ignoreErrors = \false) : void
+    public function import(string $resource, ?string $type = null, bool $ignoreErrors = \false) : void
     {
         $this->loader->setCurrentDir(\dirname($this->path));
         $this->loader->import($resource, $type, $ignoreErrors, $this->file);

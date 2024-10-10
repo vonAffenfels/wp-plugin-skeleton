@@ -10,6 +10,7 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter;
 
+/** @internal */
 interface LazyObjectInterface
 {
     /**

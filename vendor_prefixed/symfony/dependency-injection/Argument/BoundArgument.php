@@ -12,6 +12,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument
 
 /**
  * @author Guilhem Niot <guilhem.niot@gmail.com>
+ * @internal
  */
 final class BoundArgument implements ArgumentInterface
 {
@@ -24,7 +25,7 @@ final class BoundArgument implements ArgumentInterface
     private ?bool $used = null;
     private int $type;
     private ?string $file;
-    public function __construct(mixed $value, bool $trackUsage = \true, int $type = 0, string $file = null)
+    public function __construct(mixed $value, bool $trackUsage = \true, int $type = 0, ?string $file = null)
     {
         $this->value = $value;
         if ($trackUsage) {

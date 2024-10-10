@@ -27,9 +27,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class AnalyzeServiceReferencesPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private ServiceReferenceGraph $graph;
     private ?Definition $currentDefinition = null;
     private bool $onlyConstructorArguments;

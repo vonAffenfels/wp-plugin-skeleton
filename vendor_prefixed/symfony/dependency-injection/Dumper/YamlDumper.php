@@ -32,6 +32,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Yaml\Yaml;
  * YamlDumper dumps a service container as a YAML string.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class YamlDumper extends Dumper
 {
@@ -267,7 +268,7 @@ class YamlDumper extends Dumper
         }
         return $value;
     }
-    private function getServiceCall(string $id, Reference $reference = null) : string
+    private function getServiceCall(string $id, ?Reference $reference = null) : string
     {
         if (null !== $reference) {
             switch ($reference->getInvalidBehavior()) {

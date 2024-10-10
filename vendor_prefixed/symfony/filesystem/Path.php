@@ -22,6 +22,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Filesystem\Exception\RuntimeExcept
  * @author Bernhard Schussek <bschussek@gmail.com>
  * @author Thomas Schulz <mail@king2500.net>
  * @author Théo Fidry <theo.fidry@gmail.com>
+ * @internal
  */
 final class Path
 {
@@ -38,11 +39,8 @@ final class Path
      *
      * @var array<string, string>
      */
-    private static $buffer = [];
-    /**
-     * @var int
-     */
-    private static $bufferSize = 0;
+    private static array $buffer = [];
+    private static int $bufferSize = 0;
     /**
      * Canonicalizes the given path.
      *
@@ -223,7 +221,7 @@ final class Path
      * @param string|null $extension if specified, only that extension is cut
      *                               off (may contain leading dot)
      */
-    public static function getFilenameWithoutExtension(string $path, string $extension = null) : string
+    public static function getFilenameWithoutExtension(string $path, ?string $extension = null) : string
     {
         if ('' === $path) {
             return '';
@@ -314,7 +312,7 @@ final class Path
             return \false;
         }
         // Strip scheme
-        if (\false !== ($schemeSeparatorPosition = \strpos($path, '://'))) {
+        if (\false !== ($schemeSeparatorPosition = \strpos($path, '://')) && 1 !== $schemeSeparatorPosition) {
             $path = \substr($path, $schemeSeparatorPosition + 3);
         }
         $firstCharacter = $path[0];

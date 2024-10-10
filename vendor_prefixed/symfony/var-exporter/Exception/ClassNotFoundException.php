@@ -10,9 +10,10 @@
  */
 namespace WPPluginSkeleton_Vendor\Symfony\Component\VarExporter\Exception;
 
+/** @internal */
 class ClassNotFoundException extends \Exception implements ExceptionInterface
 {
-    public function __construct(string $class, \Throwable $previous = null)
+    public function __construct(string $class, ?\Throwable $previous = null)
     {
         parent::__construct(\sprintf('Class "%s" not found.', $class), 0, $previous);
     }

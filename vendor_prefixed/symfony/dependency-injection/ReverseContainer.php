@@ -16,6 +16,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Serv
  * Turns public and "container.reversible" services back to their ids.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 final class ReverseContainer
 {

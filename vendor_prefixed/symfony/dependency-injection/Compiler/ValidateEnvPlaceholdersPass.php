@@ -21,6 +21,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ParameterBag\P
  * Validates environment variable placeholders used in extension configuration with dummy values.
  *
  * @author Roland Franssen <franssen.roland@gmail.com>
+ * @internal
  */
 class ValidateEnvPlaceholdersPass implements CompilerPassInterface
 {

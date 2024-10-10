@@ -18,6 +18,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\Yaml\Tag\TaggedValue;
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @final
+ * @internal
  */
 class Parser
 {
@@ -148,9 +149,8 @@ class Parser
                     $data[] = new TaggedValue($subTag, $this->parseBlock($this->getRealCurrentLineNb() + 1, $this->getNextEmbedBlock(null, \true), $flags));
                 } else {
                     if (isset($values['leadspaces']) && ('!' === $values['value'][0] || self::preg_match('#^(?P<key>' . Inline::REGEX_QUOTED_STRING . '|[^ \'"\\{\\[].*?) *\\:(\\s+(?P<value>.+?))?\\s*$#u', $this->trimTag($values['value']), $matches))) {
-                        // this is a compact notation element, add to next block and parse
                         $block = $values['value'];
-                        if ($this->isNextLineIndented()) {
+                        if ($this->isNextLineIndented() || isset($matches['value']) && '>-' === $matches['value']) {
                             $block .= "\n" . $this->getNextEmbedBlock($this->getCurrentLineIndentation() + \strlen($values['leadspaces']) + 1);
                         }
                         $data[] = $this->parseBlock($this->getRealCurrentLineNb(), $block, $flags);
@@ -468,7 +468,7 @@ class Parser
      *
      * @throws ParseException When indentation problem are detected
      */
-    private function getNextEmbedBlock(int $indentation = null, bool $inSequence = \false) : string
+    private function getNextEmbedBlock(?int $indentation = null, bool $inSequence = \false) : string
     {
         $oldLineIndentation = $this->getCurrentLineIndentation();
         if (!$this->moveToNextLine()) {
@@ -527,11 +527,11 @@ class Parser
                 break;
             }
             if ($this->isCurrentLineBlank()) {
-                $data[] = \substr($this->currentLine, $newIndent);
+                $data[] = \substr($this->currentLine, $newIndent ?? 0);
                 continue;
             }
             if ($indent >= $newIndent) {
-                $data[] = \substr($this->currentLine, $newIndent);
+                $data[] = \substr($this->currentLine, $newIndent ?? 0);
             } elseif ($this->isCurrentLineComment()) {
                 $data[] = $this->currentLine;
             } elseif (0 == $indent) {
@@ -764,6 +764,9 @@ class Parser
             }
         } while (!$EOF && ($this->isCurrentLineEmpty() || $this->isCurrentLineComment()));
         if ($EOF) {
+            for ($i = 0; $i < $movements; ++$i) {
+                $this->moveToPreviousLine();
+            }
             return \false;
         }
         $ret = $this->getCurrentLineIndentation() > $currentIndentation;
@@ -849,7 +852,7 @@ class Parser
      *
      * @internal
      */
-    public static function preg_match(string $pattern, string $subject, array &$matches = null, int $flags = 0, int $offset = 0) : int
+    public static function preg_match(string $pattern, string $subject, ?array &$matches = null, int $flags = 0, int $offset = 0) : int
     {
         if (\false === ($ret = \preg_match($pattern, $subject, $matches, $flags, $offset))) {
             throw new ParseException(\preg_last_error_msg());

@@ -7,7 +7,9 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuild
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\Kernel;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\ThemeKernel;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\TemplateRenderer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\ThemeSearchMode;
+/** @internal */
 abstract class Theme extends BaseWordpress
 {
     private bool $hasParent = \false;
@@ -26,7 +28,7 @@ abstract class Theme extends BaseWordpress
     public function __construct(bool $debug = \false)
     {
         $theme = wp_get_theme();
-        parent::__construct($theme->get('Name'), $theme->get_stylesheet_directory(), $theme->get_stylesheet_directory_uri(), $debug);
+        parent::__construct($theme->get_stylesheet(), $theme->get_stylesheet_directory(), $theme->get_stylesheet_directory_uri(), $debug);
         $parent = $theme->parent();
         if (\false !== $parent) {
             $this->hasParent = \true;

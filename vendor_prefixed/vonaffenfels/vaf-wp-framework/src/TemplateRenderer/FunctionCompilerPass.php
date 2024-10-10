@@ -10,6 +10,7 @@ use ReflectionUnionType;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\Attribute\IsFunction;
+/** @internal */
 class FunctionCompilerPass implements CompilerPassInterface
 {
     private array $functionList = [];
@@ -49,7 +50,7 @@ class FunctionCompilerPass implements CompilerPassInterface
             $serviceParams = [];
             foreach ($method->getParameters() as $paramIdx => $parameter) {
                 $type = $parameter->getType();
-                if ($type instanceof ReflectionIntersectionType || $type instanceof ReflectionUnionType) {
+                if ($parameter->isVariadic() || $type instanceof ReflectionIntersectionType || $type instanceof ReflectionUnionType) {
                     continue;
                 }
                 if ($container->has($type->getName())) {
@@ -61,7 +62,7 @@ class FunctionCompilerPass implements CompilerPassInterface
             if (isset($this->functionList[$functionName])) {
                 throw new Exception(\sprintf('Function %s is already defined!', $functionName));
             }
-            $this->functionList[$functionName] = ['container' => $class, 'method' => $methodName, 'serviceParams' => $serviceParams];
+            $this->functionList[$functionName] = ['container' => $class, 'method' => $methodName, 'isSafeHTML' => $instance->safeHTML, 'serviceParams' => $serviceParams];
         }
     }
 }

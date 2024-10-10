@@ -11,7 +11,6 @@
     ],
     "config": {
         "optimize-autoloader": true,
-        "classmap-authoritative": true,
         "platform": {
             "php": "8.1"
         },
@@ -27,10 +26,11 @@
     },
     "require-dev": {
         "php": ">=8.1",
+        "brainmaestro/composer-git-hooks": "^3.0",
         "humbug/php-scoper": "^0.18.3",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.5",
-        "vonaffenfels/vaf-wp-framework": "^0"
+        "vonaffenfels/vaf-wp-framework": "dev-PKP-288 as 1.0.6"
     },
     "scripts": {
         "post-create-project-cmd": [
@@ -42,5 +42,16 @@
         "post-autoload-dump": [
             "VAF\\WP\\Framework\\Composer\\PluginActions::prefixDependencies"
         ]
+    },
+    "extra": {
+        "hooks": {
+            "config": {
+                "stop-on-failure": ["pre-commit"]
+            },
+            "pre-commit": [
+                "composer build-container",
+                "git add container/"
+            ]
+        }
     }
 }

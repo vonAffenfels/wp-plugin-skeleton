@@ -15,6 +15,7 @@ use WPPluginSkeleton_Vendor\Psr\Container\NotFoundExceptionInterface;
  * This exception is thrown when a non-existent parameter is used.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class ParameterNotFoundException extends InvalidArgumentException implements NotFoundExceptionInterface
 {
@@ -31,7 +32,7 @@ class ParameterNotFoundException extends InvalidArgumentException implements Not
      * @param string[]        $alternatives         Some parameter name alternatives
      * @param string|null     $nonNestedAlternative The alternative parameter name when the user expected dot notation for nested parameters
      */
-    public function __construct(string $key, string $sourceId = null, string $sourceKey = null, \Throwable $previous = null, array $alternatives = [], string $nonNestedAlternative = null)
+    public function __construct(string $key, ?string $sourceId = null, ?string $sourceKey = null, ?\Throwable $previous = null, array $alternatives = [], ?string $nonNestedAlternative = null)
     {
         $this->key = $key;
         $this->sourceId = $sourceId;

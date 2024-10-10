@@ -14,10 +14,11 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
  * This exception wraps exceptions whose messages contain a reference to an env parameter.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class EnvParameterException extends InvalidArgumentException
 {
-    public function __construct(array $envs, \Throwable $previous = null, string $message = 'Incompatible use of dynamic environment variables "%s" found in parameters.')
+    public function __construct(array $envs, ?\Throwable $previous = null, string $message = 'Incompatible use of dynamic environment variables "%s" found in parameters.')
     {
         parent::__construct(\sprintf($message, \implode('", "', $envs)), 0, $previous);
     }

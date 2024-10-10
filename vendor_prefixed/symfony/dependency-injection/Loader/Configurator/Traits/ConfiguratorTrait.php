@@ -11,6 +11,7 @@
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\Traits;
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
+/** @internal */
 trait ConfiguratorTrait
 {
     /**

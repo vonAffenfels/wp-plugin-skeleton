@@ -17,9 +17,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class RemoveUnusedDefinitionsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private array $connectedIds = [];
     /**
      * Processes the ContainerBuilder to remove unused definitions.

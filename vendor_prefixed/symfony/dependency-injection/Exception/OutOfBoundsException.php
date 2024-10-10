@@ -12,6 +12,7 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exceptio
 
 /**
  * Base OutOfBoundsException for Dependency Injection component.
+ * @internal
  */
 class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface
 {

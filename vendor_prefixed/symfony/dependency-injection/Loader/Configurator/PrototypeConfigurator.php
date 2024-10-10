@@ -14,6 +14,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 /**
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class PrototypeConfigurator extends AbstractServiceConfigurator
 {
@@ -39,7 +40,7 @@ class PrototypeConfigurator extends AbstractServiceConfigurator
     private ?array $excludes = null;
     private bool $allowParent;
     private ?string $path;
-    public function __construct(ServicesConfigurator $parent, PhpFileLoader $loader, Definition $defaults, string $namespace, string $resource, bool $allowParent, string $path = null)
+    public function __construct(ServicesConfigurator $parent, PhpFileLoader $loader, Definition $defaults, string $namespace, string $resource, bool $allowParent, ?string $path = null)
     {
         $definition = new Definition();
         if (!$defaults->isPublic() || !$defaults->isPrivate()) {

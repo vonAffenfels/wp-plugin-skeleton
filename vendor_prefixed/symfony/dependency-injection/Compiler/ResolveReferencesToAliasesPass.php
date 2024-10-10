@@ -17,9 +17,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
  * Replaces all references to aliases with references to the actual service.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class ResolveReferencesToAliasesPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     /**
      * @return void
      */

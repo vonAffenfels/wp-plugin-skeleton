@@ -14,11 +14,12 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection;
  * EnvVarLoaderInterface objects return key/value pairs that are added to the list of available env vars.
  *
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 interface EnvVarLoaderInterface
 {
     /**
-     * @return string[] Key/value pairs that can be accessed using the regular "%env()%" syntax
+     * @return array<string|\Stringable> Key/value pairs that can be accessed using the regular "%env()%" syntax
      */
     public function loadEnvVars() : array;
 }

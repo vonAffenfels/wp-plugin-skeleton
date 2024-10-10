@@ -32,12 +32,13 @@ use WPPluginSkeleton_Vendor\Symfony\Component\ExpressionLanguage\Expression;
  * XmlFileLoader loads XML files service definitions.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ * @internal
  */
 class XmlFileLoader extends FileLoader
 {
     public const NS = 'http://symfony.com/schema/dic/services';
     protected $autoRegisterAliasesForSinglyImplementedInterfaces = \false;
-    public function load(mixed $resource, string $type = null) : mixed
+    public function load(mixed $resource, ?string $type = null) : mixed
     {
         $path = $this->locator->locate($resource);
         $xml = $this->parseFileToDOM($path);
@@ -58,7 +59,7 @@ class XmlFileLoader extends FileLoader
         }
         return null;
     }
-    private function loadXml(\DOMDocument $xml, string $path, \DOMNode $root = null) : void
+    private function loadXml(\DOMDocument $xml, string $path, ?\DOMNode $root = null) : void
     {
         $defaults = $this->getServiceDefaults($xml, $path, $root);
         // anonymous services
@@ -77,7 +78,7 @@ class XmlFileLoader extends FileLoader
             $this->registerAliasesForSinglyImplementedInterfaces();
         }
     }
-    public function supports(mixed $resource, string $type = null) : bool
+    public function supports(mixed $resource, ?string $type = null) : bool
     {
         if (!\is_string($resource)) {
             return \false;
@@ -87,13 +88,13 @@ class XmlFileLoader extends FileLoader
         }
         return 'xml' === $type;
     }
-    private function parseParameters(\DOMDocument $xml, string $file, \DOMNode $root = null) : void
+    private function parseParameters(\DOMDocument $xml, string $file, ?\DOMNode $root = null) : void
     {
         if ($parameters = $this->getChildren($root ?? $xml->documentElement, 'parameters')) {
             $this->container->getParameterBag()->add($this->getArgumentsAsPhp($parameters[0], 'parameter', $file));
         }
     }
-    private function parseImports(\DOMDocument $xml, string $file, \DOMNode $root = null) : void
+    private function parseImports(\DOMDocument $xml, string $file, ?\DOMNode $root = null) : void
     {
         $xpath = new \DOMXPath($xml);
         $xpath->registerNamespace('container', self::NS);
@@ -106,7 +107,7 @@ class XmlFileLoader extends FileLoader
             $this->import($import->getAttribute('resource'), XmlUtils::phpize($import->getAttribute('type')) ?: null, XmlUtils::phpize($import->getAttribute('ignore-errors')) ?: \false, $file);
         }
     }
-    private function parseDefinitions(\DOMDocument $xml, string $file, Definition $defaults, \DOMNode $root = null) : void
+    private function parseDefinitions(\DOMDocument $xml, string $file, Definition $defaults, ?\DOMNode $root = null) : void
     {
         $xpath = new \DOMXPath($xml);
         $xpath->registerNamespace('container', self::NS);
@@ -154,7 +155,7 @@ class XmlFileLoader extends FileLoader
             }
         }
     }
-    private function getServiceDefaults(\DOMDocument $xml, string $file, \DOMNode $root = null) : Definition
+    private function getServiceDefaults(\DOMDocument $xml, string $file, ?\DOMNode $root = null) : Definition
     {
         $xpath = new \DOMXPath($xml);
         $xpath->registerNamespace('container', self::NS);
@@ -368,7 +369,32 @@ class XmlFileLoader extends FileLoader
         try {
             $dom = XmlUtils::loadFile($file, $this->validateSchema(...));
         } catch (\InvalidArgumentException $e) {
-            throw new InvalidArgumentException(\sprintf('Unable to parse file "%s": ', $file) . $e->getMessage(), $e->getCode(), $e);
+            $invalidSecurityElements = [];
+            $errors = \explode("\n", $e->getMessage());
+            foreach ($errors as $i => $error) {
+                if (\preg_match("#^\\[ERROR 1871] Element '\\{http://symfony\\.com/schema/dic/security}([^']+)'#", $error, $matches)) {
+                    $invalidSecurityElements[$i] = $matches[1];
+                }
+            }
+            if ($invalidSecurityElements) {
+                $dom = XmlUtils::loadFile($file);
+                foreach ($invalidSecurityElements as $errorIndex => $tagName) {
+                    foreach ($dom->getElementsByTagNameNS('http://symfony.com/schema/dic/security', $tagName) as $element) {
+                        if (!($parent = $element->parentNode)) {
+                            continue;
+                        }
+                        if ('http://symfony.com/schema/dic/security' !== $parent->namespaceURI) {
+                            continue;
+                        }
+                        if ('provider' === $parent->localName || 'firewall' === $parent->localName) {
+                            unset($errors[$errorIndex]);
+                        }
+                    }
+                }
+            }
+            if ($errors) {
+                throw new InvalidArgumentException(\sprintf('Unable to parse file "%s": ', $file) . \implode("/n", $errors), $e->getCode(), $e);
+            }
         }
         $this->validateExtensions($dom, $file);
         return $dom;
@@ -376,7 +402,7 @@ class XmlFileLoader extends FileLoader
     /**
      * Processes anonymous services.
      */
-    private function processAnonymousServices(\DOMDocument $xml, string $file, \DOMNode $root = null) : void
+    private function processAnonymousServices(\DOMDocument $xml, string $file, ?\DOMNode $root = null) : void
     {
         $definitions = [];
         $count = 0;
@@ -716,6 +742,6 @@ EOF;
      */
     public static function convertDomElementToArray(\DOMElement $element) : mixed
     {
-        return XmlUtils::convertDomElementToArray($element);
+        return XmlUtils::convertDomElementToArray($element, \false);
     }
 }

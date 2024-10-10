@@ -19,6 +19,7 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Loader\Configu
  * An Extension that provides configuration hooks.
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
+ * @internal
  */
 abstract class AbstractExtension extends Extension implements ConfigurableExtensionInterface, PrependExtensionInterface
 {

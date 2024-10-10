@@ -22,9 +22,11 @@ use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\Serv
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Nicolas Grekas <p@tchwork.com>
+ * @internal
  */
 class ResolveChildDefinitionsPass extends AbstractRecursivePass
 {
+    protected bool $skipScalars = \true;
     private array $currentPath;
     protected function processValue(mixed $value, bool $isRoot = \false) : mixed
     {

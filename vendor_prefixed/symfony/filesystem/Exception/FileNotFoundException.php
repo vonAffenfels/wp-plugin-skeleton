@@ -15,10 +15,11 @@ namespace WPPluginSkeleton_Vendor\Symfony\Component\Filesystem\Exception;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Christian Gärtner <christiangaertner.film@googlemail.com>
+ * @internal
  */
 class FileNotFoundException extends IOException
 {
-    public function __construct(string $message = null, int $code = 0, \Throwable $previous = null, string $path = null)
+    public function __construct(?string $message = null, int $code = 0, ?\Throwable $previous = null, ?string $path = null)
     {
         if (null === $message) {
             if (null === $path) {

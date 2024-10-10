@@ -44,6 +44,7 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\ResetInterface;
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
+ * @internal
  */
 class Container implements ContainerInterface, ResetInterface
 {
@@ -60,8 +61,8 @@ class Container implements ContainerInterface, ResetInterface
     private array $envCache = [];
     private bool $compiled = \false;
     private \Closure $getEnv;
-    private static $make;
-    public function __construct(ParameterBagInterface $parameterBag = null)
+    private static \Closure $make;
+    public function __construct(?ParameterBagInterface $parameterBag = null)
     {
         $this->parameterBag = $parameterBag ?? new EnvPlaceholderParameterBag();
     }
@@ -174,7 +175,6 @@ class Container implements ContainerInterface, ResetInterface
      *
      * @throws ServiceCircularReferenceException When a circular reference is detected
      * @throws ServiceNotFoundException          When the service is not defined
-     * @throws \Exception                        if an exception has been thrown when the service has been resolved
      *
      * @see Reference
      */
@@ -248,7 +248,6 @@ class Container implements ContainerInterface, ResetInterface
     public function reset()
     {
         $services = $this->services + $this->privates;
-        $this->services = $this->factories = $this->privates = [];
         foreach ($services as $service) {
             try {
                 if ($service instanceof ResetInterface) {
@@ -258,6 +257,7 @@ class Container implements ContainerInterface, ResetInterface
                 continue;
             }
         }
+        $this->services = $this->factories = $this->privates = [];
     }
     /**
      * Gets all service ids.
@@ -323,13 +323,9 @@ class Container implements ContainerInterface, ResetInterface
             $prefix = 'string';
             $localName = $name;
         }
-        if ($processors->has($prefix)) {
-            $processor = $processors->get($prefix);
-        } else {
-            $processor = new EnvVarProcessor($this);
-            if (\false === $i) {
-                $prefix = '';
-            }
+        $processor = $processors->has($prefix) ? $processors->get($prefix) : new EnvVarProcessor($this);
+        if (\false === $i) {
+            $prefix = '';
         }
         $this->resolving[$envName] = \true;
         try {

@@ -25,6 +25,7 @@ use WPPluginSkeleton_Vendor\Symfony\Contracts\Service\ServiceSubscriberInterface
  * @template-covariant T of mixed
  *
  * @implements ServiceProviderInterface<T>
+ * @internal
  */
 class ServiceLocator implements ServiceProviderInterface, \Countable
 {
@@ -51,6 +52,9 @@ class ServiceLocator implements ServiceProviderInterface, \Countable
             throw $e;
         }
     }
+    /**
+     * @return mixed
+     */
     public function __invoke(string $id)
     {
         return isset($this->factories[$id]) ? $this->get($id) : null;
@@ -114,7 +118,7 @@ class ServiceLocator implements ServiceProviderInterface, \Countable
     {
         return new ServiceCircularReferenceException($id, $path);
     }
-    private function formatAlternatives(array $alternatives = null, string $separator = 'and') : string
+    private function formatAlternatives(?array $alternatives = null, string $separator = 'and') : string
     {
         $format = '"%s"%s';
         if (null === $alternatives) {
