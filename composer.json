@@ -33,6 +33,10 @@
         "vonaffenfels/vaf-wp-framework": "dev-PKP-288 as 1.0.6"
     },
     "scripts": {
+        "init-tests": [
+            "composer require pestphp/pest --dev --with-all-dependencies",
+            "./vendor/bin/pest --init",
+        ],
         "post-create-project-cmd": [
             "VAF\\WP\\Framework\\Composer\\PluginSkeletonAction::onPostCreateProject"
         ],
