@@ -30,7 +30,7 @@
         "humbug/php-scoper": "^0.18.3",
         "mockery/mockery": "^1.6",
         "phpunit/phpunit": "^10.5",
-        "vonaffenfels/vaf-wp-framework": "dev-PKP-288 as 1.0.6"
+        "vonaffenfels/vaf-wp-framework": "^1.0.6"
     },
     "scripts": {
         "init-tests": [
