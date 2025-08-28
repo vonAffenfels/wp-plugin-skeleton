@@ -14,6 +14,8 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\Attributes\IsTabbedPage;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\AdminPages\TabbedPageCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit\Attribute\AsBulkEditContainer;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\QuickEdit\Attribute\AsQuickEditContainer;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\CustomColumn\Attribute\AsCustomColumnContainer;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\GutenbergBlock\Attribute\AsDynamicBlock;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\GutenbergBlock\Loader as GutenbergBlockLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\GutenbergBlock\LoaderCompilerPass as GutenbergBlockCompilerPass;
@@ -28,6 +30,14 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\Loader as MetaboxLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\LoaderCompilerPass as MetaboxLoaderCompilerPass;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit\Loader as BulkeditLoader;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit\LoaderCompilerPass as BulkeditLoaderCompilerPass;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\QuickEdit\Loader as QuickeditLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\QuickEdit\LoaderCompilerPass as QuickeditLoaderCompilerPass;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\CustomColumn\Loader as CustomColumnLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\CustomColumn\LoaderCompilerPass as CustomColumnLoaderCompilerPass;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Facade\Attribute\AsFacade;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Facade\Loader as FacadeLoader;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Facade\LoaderCompilerPass as FacadeLoaderCompilerPass;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Paths\Paths;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Attributes\PostType;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\Attributes\PostTypeExtension;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostObjects\ExtensionLoader as PostObjectExtensionLoader;
@@ -68,12 +78,15 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\Utils\Templates\Admin\TabbedPage as
 /** @internal */
 abstract class WordpressKernel extends Kernel
 {
-    public function __construct(string $projectDir, bool $debug, string $namespace, protected readonly BaseWordpress $base)
+    public function __construct(string $projectDir, bool $debug, string $namespace, protected readonly BaseWordpress $base, bool $preventAutomaticContainerCache = \false)
     {
-        parent::__construct($projectDir, $debug, $namespace);
+        parent::__construct($projectDir, $debug, $namespace, $preventAutomaticContainerCache);
     }
     protected function bootHandler() : void
     {
+        /** @var FacadeLoader $facadeLoader */
+        $facadeLoader = $this->getContainer()->get('facade.loader');
+        $facadeLoader->registerFacades();
         /** @var HookLoader $hookLoader */
         $hookLoader = $this->getContainer()->get('hook.loader');
         $hookLoader->registerHooks();
@@ -83,6 +96,12 @@ abstract class WordpressKernel extends Kernel
         /** @var BulkEditLoader $bulkeditLoader */
         $bulkeditLoader = $this->getContainer()->get('bulkedit.loader');
         $bulkeditLoader->registerBulkEditFields();
+        /** @var QuickEditLoader $quickeditLoader */
+        $quickeditLoader = $this->getContainer()->get('quickedit.loader');
+        $quickeditLoader->registerQuickEditFields();
+        /** @var CustomColumnLoader $quickeditLoader */
+        $customColumnLoader = $this->getContainer()->get('customColumn.loader');
+        $customColumnLoader->registerCustomColumnFields();
         /** @var GutenbergBlockLoader $gutenbergBlockLoader */
         $gutenbergBlockLoader = $this->getContainer()->get('gutenbergblock.loader');
         $gutenbergBlockLoader->registerBlocks();
@@ -129,12 +148,17 @@ abstract class WordpressKernel extends Kernel
         } elseif (\is_file($configDir . '/services.php')) {
             $container->import($configDir . '/services.php');
         }
+        $builder->setParameter('wordpress.base.name', $this->base->getName());
         $this->registerRequestService($builder);
         $this->registerTemplateRenderer($builder);
         $this->registerTemplate($builder);
+        $this->registerFacadeContainer($builder);
+        $this->registerPathsContainer($builder);
         $this->registerHookContainer($builder);
         $this->registerMetaboxContainer($builder);
         $this->registerBulkeditContainer($builder);
+        $this->registerQuickeditContainer($builder);
+        $this->registerCustomColumnContainer($builder);
         $this->registerGutenbergBlock($builder);
         $this->registerShortcodeContainer($builder);
         $this->registerSettingsContainer($builder);
@@ -280,6 +304,22 @@ abstract class WordpressKernel extends Kernel
             $definition->addTag('bulkedit.container');
         });
     }
+    private function registerQuickeditContainer(ContainerBuilder $builder)
+    {
+        $builder->register('quickedit.loader', QuickeditLoader::class)->setPublic(\true)->setAutowired(\true);
+        $builder->addCompilerPass(new QuickeditLoaderCompilerPass());
+        $builder->registerAttributeForAutoconfiguration(AsQuickEditContainer::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('quickedit.container');
+        });
+    }
+    private function registerCustomColumnContainer(ContainerBuilder $builder)
+    {
+        $builder->register('customColumn.loader', CustomColumnLoader::class)->setPublic(\true)->setAutowired(\true);
+        $builder->addCompilerPass(new CustomColumnLoaderCompilerPass());
+        $builder->registerAttributeForAutoconfiguration(AsCustomColumnContainer::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('customColumn.container');
+        });
+    }
     private function registerGutenbergBlock(ContainerBuilder $builder) : void
     {
         $builder->register('gutenbergblock.loader', GutenbergBlockLoader::class)->setPublic(\true)->setAutowired(\true);
@@ -295,5 +335,17 @@ abstract class WordpressKernel extends Kernel
         $builder->registerAttributeForAutoconfiguration(AsRestContainer::class, static function (ChildDefinition $definition) : void {
             $definition->addTag('restapi.container');
         });
+    }
+    private function registerFacadeContainer(ContainerBuilder $builder) : void
+    {
+        $builder->register('facade.loader', FacadeLoader::class)->setPublic(\true)->setAutowired(\true);
+        $builder->addCompilerPass(new FacadeLoaderCompilerPass());
+        $builder->registerAttributeForAutoconfiguration(AsFacade::class, static function (ChildDefinition $definition) : void {
+            $definition->addTag('facade.container');
+        });
+    }
+    private function registerPathsContainer(ContainerBuilder $builder) : void
+    {
+        $builder->register(Paths::class, Paths::class)->setArgument('$basePath', $this->base->getPath())->setArgument('$baseUrl', $this->base->getUrl())->setPublic(\true)->setAutowired(\false);
     }
 }

@@ -43,7 +43,8 @@ abstract class Helper implements HelperInterface
     {
         $string ??= '';
         if (\preg_match('//u', $string)) {
-            return (new UnicodeString($string))->width(\false);
+            $string = \preg_replace('/[\\p{Cc}\\x7F]++/u', '', $string, -1, $count);
+            return (new UnicodeString($string))->width(\false) + $count;
         }
         if (\false === ($encoding = \mb_detect_encoding($string, null, \true))) {
             return \strlen($string);
@@ -71,6 +72,9 @@ abstract class Helper implements HelperInterface
     public static function substr(?string $string, int $from, ?int $length = null) : string
     {
         $string ??= '';
+        if (\preg_match('//u', $string)) {
+            return (new UnicodeString($string))->slice($from, $length);
+        }
         if (\false === ($encoding = \mb_detect_encoding($string, null, \true))) {
             return \substr($string, $from, $length);
         }

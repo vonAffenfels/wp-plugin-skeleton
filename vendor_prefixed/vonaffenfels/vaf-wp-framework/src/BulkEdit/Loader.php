@@ -3,6 +3,7 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\BulkEdit;
 
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\PostTypeList;
 /** @internal */
 final class Loader
 {

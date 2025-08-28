@@ -3,9 +3,12 @@
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\RestAPI;
 
 use Exception;
+use Throwable;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Kernel\WordpressKernel;
+use WP_HTTP_Response;
 use WP_REST_Request;
+use WP_REST_Response;
 /** @internal */
 final class Loader
 {
@@ -17,10 +20,6 @@ final class Loader
         $name = $this->base->getName();
         foreach ($this->restContainer as $serviceId => $restContainer) {
             foreach ($restContainer as $restRoute) {
-                $namespace = $name;
-                if (!empty($restRoute['namespace'])) {
-                    $namespace .= '/' . $restRoute['namespace'];
-                }
                 $params = [];
                 foreach ($restRoute['serviceParams'] as $param => $service) {
                     $params[$param] = $this->kernel->getContainer()->get($service);
@@ -30,6 +29,8 @@ final class Loader
                     'none' => fn() => \true,
                     'wordpress_permission' => fn() => current_user_can($restRoute['permission']['wordpress_permission_name']),
                 }, 'methods' => $restRoute['method']->value, 'callback' => function (WP_REST_Request $request) use($serviceId, $methodName, $params, $restRoute) : array|WP_HTTP_Response {
+                    $suppressOutput = SuppressOutput::enabled($restRoute['suppressEchoOutput'] ?? \true);
+                    $suppressOutput->start();
                     $return = ['success' => \false];
                     foreach ($restRoute['params'] as $name) {
                         if (!isset($restRoute['paramsDefault'][$name]) && !$request->has_param($name)) {
@@ -58,8 +59,11 @@ final class Loader
                     try {
                         $container = $this->kernel->getContainer()->get($serviceId);
                         $retVal = $container->{$methodName}(...$params);
-                        if ($retVal instanceof \WPPluginSkeleton_Vendor\WP_HTTP_Response) {
+                        if ($retVal instanceof WP_HTTP_Response) {
                             return $retVal;
+                        }
+                        if (!($restRoute['wrapResponse'] ?? \true)) {
+                            return new WP_REST_Response($retVal);
                         }
                         if ($retVal !== \false) {
                             $return['success'] = \true;
@@ -67,13 +71,18 @@ final class Loader
                                 $return['data'] = $retVal;
                             }
                         }
-                    } catch (Exception $e) {
+                    } catch (Throwable $e) {
+                        if (!($restRoute['wrapResponse'] ?? \true)) {
+                            $suppressOutput->finish();
+                            return new WP_REST_Response(['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()], 500);
+                        }
                         $return['success'] = \false;
                         $return['message'] = $e->getMessage();
                     }
+                    $suppressOutput->finish();
                     return $return;
                 }];
-                register_rest_route($namespace, '/' . $restRoute['uri'], $options);
+                register_rest_route(RestApiLink::forNamespacePluginRoute($restRoute['namespace'], $this->base, $restRoute['uri'])->namespace(), RestApiLink::forNamespacePluginRoute($restRoute['namespace'], $this->base, $restRoute['uri'])->uri(), $options);
             }
         }
     }

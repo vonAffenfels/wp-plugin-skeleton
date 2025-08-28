@@ -14,7 +14,10 @@
         "platform": {
             "php": "8.1"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -29,7 +32,7 @@
         "brainmaestro/composer-git-hooks": "^3.0",
         "humbug/php-scoper": "^0.18.3",
         "mockery/mockery": "^1.6",
-        "phpunit/phpunit": "^10.5",
+        "pestphp/pest": "^2.36",
         "vonaffenfels/vaf-wp-framework": "^1.0.6"
     },
     "scripts": {

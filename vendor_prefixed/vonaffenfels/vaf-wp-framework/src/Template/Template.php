@@ -7,10 +7,10 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\TemplateRenderer\TemplateRenderer;
 /** @internal */
 abstract class Template
 {
-    public final function __construct(private readonly BaseWordpress $base, private readonly TemplateRenderer $renderer, private readonly string $templateFile)
+    public function __construct(private readonly BaseWordpress $base, private readonly TemplateRenderer $renderer, private readonly string $templateFile)
     {
     }
-    public final function render() : string
+    public function render() : string
     {
         $jsData = $this->getJavascriptData();
         if ($jsData !== \false) {
@@ -20,11 +20,11 @@ abstract class Template
         }
         return $this->renderer->render($this->templateFile, $this->getContextData());
     }
-    public final function output() : void
+    public function output() : void
     {
         echo $this->render();
     }
-    public final function addScript(string $src, array $deps = [], array $adminAjaxActions = []) : self
+    public function addScript(string $src, array $deps = [], array $adminAjaxActions = []) : self
     {
         $handle = $this->base->getName() . '_' . \pathinfo($src, \PATHINFO_FILENAME);
         $src = $this->base->getAssetUrl($src);

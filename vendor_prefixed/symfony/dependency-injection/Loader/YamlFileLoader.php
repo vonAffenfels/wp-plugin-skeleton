@@ -556,7 +556,7 @@ class YamlFileLoader extends FileLoader
      */
     protected function loadFile(string $file) : ?array
     {
-        if (!\class_exists(\WPPluginSkeleton_Vendor\Symfony\Component\Yaml\Parser::class)) {
+        if (!\class_exists(YamlParser::class)) {
             throw new RuntimeException('Unable to load YAML config files as the Symfony Yaml Component is not installed. Try running "composer require symfony/yaml".');
         }
         if (!\stream_is_local($file)) {

@@ -47,7 +47,7 @@ class InputOption
     private string $name;
     private string|array|null $shortcut;
     private int $mode;
-    private string|int|bool|array|null|float $default;
+    private string|int|bool|array|float|null $default;
     private array|\Closure $suggestedValues;
     private string $description;
     /**

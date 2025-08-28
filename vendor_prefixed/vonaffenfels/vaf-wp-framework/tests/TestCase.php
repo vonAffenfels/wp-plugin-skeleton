@@ -7,7 +7,7 @@ use WPPluginSkeleton_Vendor\VAF\WP\Framework\Filter\Filter;
 /** @internal */
 class TestCase extends MockeryTestCase
 {
-    public function setUp() : void
+    protected function setUp() : void
     {
         parent::setUp();
         Filter::resetFake();

@@ -1,106 +1,54 @@
 <?php
 
-namespace WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\Unit;
+namespace WPPluginSkeleton_Vendor;
 
+uses(\WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\TestCase::class);
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Setting\Conversion;
-use WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\TestCase;
-/** @internal */
-class BooleanConversionTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function should_convert_string_true_in_db_to_true_boolean()
-    {
-        $result = (Conversion::boolean()->fromDb)('true');
-        $this->assertTrue($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_string_false_in_db_to_false_boolean()
-    {
-        $result = (Conversion::boolean()->fromDb)('false');
-        $this->assertFalse($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_string_inactive_in_db_to_false_boolean()
-    {
-        $result = (Conversion::boolean()->fromDb)('inactive');
-        $this->assertFalse($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_string_active_in_db_to_true_boolean()
-    {
-        $result = (Conversion::boolean()->fromDb)('active');
-        $this->assertTrue($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_string_1_in_db_to_true_boolean()
-    {
-        $result = (Conversion::boolean()->fromDb)('1');
-        $this->assertTrue($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_string_0_in_db_to_false_boolean()
-    {
-        $result = (Conversion::boolean()->fromDb)('0');
-        $this->assertFalse($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_input_string_active_to_true()
-    {
-        $result = (Conversion::boolean()->fromInput)('active');
-        $this->assertTrue($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_input_string_inactive_to_false()
-    {
-        $result = (Conversion::boolean()->fromInput)('inactive');
-        $this->assertFalse($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_input_string_true_to_true()
-    {
-        $result = (Conversion::boolean()->fromInput)('true');
-        $this->assertTrue($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_input_string_false_to_false()
-    {
-        $result = (Conversion::boolean()->fromInput)('false');
-        $this->assertFalse($result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_true_boolean_value_to_true_string_in_db()
-    {
-        $result = (Conversion::boolean()->toDb)(\true);
-        $this->assertEquals('true', $result);
-    }
-    /**
-     * @test
-     */
-    public function should_convert_false_boolean_value_to_false_string_in_db()
-    {
-        $result = (Conversion::boolean()->toDb)(\false);
-        $this->assertEquals('false', $result);
-    }
-}
+test('should convert string true in db to true boolean', function () {
+    $result = (Conversion::boolean()->fromDb)('true');
+    expect($result)->toBeTrue();
+});
+test('should convert string false in db to false boolean', function () {
+    $result = (Conversion::boolean()->fromDb)('false');
+    expect($result)->toBeFalse();
+});
+test('should convert string inactive in db to false boolean', function () {
+    $result = (Conversion::boolean()->fromDb)('inactive');
+    expect($result)->toBeFalse();
+});
+test('should convert string active in db to true boolean', function () {
+    $result = (Conversion::boolean()->fromDb)('active');
+    expect($result)->toBeTrue();
+});
+test('should convert string 1 in db to true boolean', function () {
+    $result = (Conversion::boolean()->fromDb)('1');
+    expect($result)->toBeTrue();
+});
+test('should convert string 0 in db to false boolean', function () {
+    $result = (Conversion::boolean()->fromDb)('0');
+    expect($result)->toBeFalse();
+});
+test('should convert input string active to true', function () {
+    $result = (Conversion::boolean()->fromInput)('active');
+    expect($result)->toBeTrue();
+});
+test('should convert input string inactive to false', function () {
+    $result = (Conversion::boolean()->fromInput)('inactive');
+    expect($result)->toBeFalse();
+});
+test('should convert input string true to true', function () {
+    $result = (Conversion::boolean()->fromInput)('true');
+    expect($result)->toBeTrue();
+});
+test('should convert input string false to false', function () {
+    $result = (Conversion::boolean()->fromInput)('false');
+    expect($result)->toBeFalse();
+});
+test('should convert true boolean value to true string in db', function () {
+    $result = (Conversion::boolean()->toDb)(\true);
+    expect($result)->toEqual('true');
+});
+test('should convert false boolean value to false string in db', function () {
+    $result = (Conversion::boolean()->toDb)(\false);
+    expect($result)->toEqual('false');
+});

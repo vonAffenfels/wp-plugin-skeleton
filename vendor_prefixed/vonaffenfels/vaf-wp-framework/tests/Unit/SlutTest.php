@@ -1,42 +1,22 @@
 <?php
 
-namespace WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\Unit;
+namespace WPPluginSkeleton_Vendor;
 
+uses(\WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\TestCase::class);
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Slug;
-use WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\TestCase;
-/** @internal */
-class SlutTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function should_keep_a_to_z()
-    {
-        $slug = Slug::fromName('abcdefghijklmnopqrstuvwxyz');
-        $this->assertEquals('abcdefghijklmnopqrstuvwxyz', (string) $slug);
-    }
-    /**
-     * @test
-     */
-    public function should_change_capital_a_to_z_to_lowercase_a_to_z()
-    {
-        $slug = Slug::fromName('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
-        $this->assertEquals('abcdefghijklmnopqrstuvwxyz', (string) $slug);
-    }
-    /**
-     * @test
-     */
-    public function should_change_anything_not_a_to_z_to_dash()
-    {
-        $slug = Slug::fromName('a b');
-        $this->assertEquals('a-b', (string) $slug);
-    }
-    /**
-     * @test
-     */
-    public function should_reduce_multiple_dashes_to_single_dash()
-    {
-        $slug = Slug::fromName('a!@#b');
-        $this->assertEquals('a-b', (string) $slug);
-    }
-}
+test('should keep a to z', function () {
+    $slug = Slug::fromName('abcdefghijklmnopqrstuvwxyz');
+    expect((string) $slug)->toEqual('abcdefghijklmnopqrstuvwxyz');
+});
+test('should change capital a to z to lowercase a to z', function () {
+    $slug = Slug::fromName('ABCDEFGHIJKLMNOPQRSTUVWXYZ');
+    expect((string) $slug)->toEqual('abcdefghijklmnopqrstuvwxyz');
+});
+test('should change anything not a to z to dash', function () {
+    $slug = Slug::fromName('a b');
+    expect((string) $slug)->toEqual('a-b');
+});
+test('should reduce multiple dashes to single dash', function () {
+    $slug = Slug::fromName('a!@#b');
+    expect((string) $slug)->toEqual('a-b');
+});

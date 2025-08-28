@@ -11,6 +11,16 @@ namespace WPPluginSkeleton_Vendor;
  * file that was distributed with this source code.
  */
 use WPPluginSkeleton_Vendor\Symfony\Polyfill\Intl\Grapheme as p;
+if (!\function_exists('WPPluginSkeleton_Vendor\\grapheme_str_split')) {
+    /** @internal */
+    function grapheme_str_split(string $string, int $length = 1) : array|false
+    {
+        return p\Grapheme::grapheme_str_split($string, $length);
+    }
+}
+if (\extension_loaded('intl')) {
+    return;
+}
 if (!\defined('GRAPHEME_EXTR_COUNT')) {
     \define('GRAPHEME_EXTR_COUNT', 0);
 }

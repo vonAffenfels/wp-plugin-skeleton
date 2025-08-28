@@ -11,7 +11,6 @@
 namespace WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Argument;
 
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\ContainerBuilder;
-use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Definition;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use WPPluginSkeleton_Vendor\Symfony\Component\DependencyInjection\Reference;
@@ -34,19 +33,19 @@ class LazyClosure
             throw new InvalidArgumentException(\sprintf('Cannot read property "%s" from a lazy closure.', $name));
         }
         if (isset($this->initializer)) {
-            $this->service = ($this->initializer)();
+            if (\is_string($service = ($this->initializer)())) {
+                $service = (new \ReflectionClass($service))->newInstanceWithoutConstructor();
+            }
+            $this->service = $service;
             unset($this->initializer);
         }
         return $this->service;
     }
-    public static function getCode(string $initializer, array $callable, Definition $definition, ContainerBuilder $container, ?string $id) : string
+    public static function getCode(string $initializer, array $callable, string $class, ContainerBuilder $container, ?string $id) : string
     {
         $method = $callable[1];
-        $asClosure = 'Closure' === ($definition->getClass() ?: 'Closure');
-        if ($asClosure) {
+        if ($asClosure = 'Closure' === $class) {
             $class = ($callable[0] instanceof Reference ? $container->findDefinition($callable[0]) : $callable[0])->getClass();
-        } else {
-            $class = $definition->getClass();
         }
         $r = $container->getReflectionClass($class);
         if (null !== $id) {

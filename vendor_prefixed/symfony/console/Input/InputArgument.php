@@ -29,7 +29,7 @@ class InputArgument
     public const IS_ARRAY = 4;
     private string $name;
     private int $mode;
-    private string|int|bool|array|null|float $default;
+    private string|int|bool|array|float|null $default;
     private array|\Closure $suggestedValues;
     private string $description;
     /**

@@ -1,6 +1,6 @@
 # BulkEdit
 
-A BulkEdit field shown when selecting a bunch of posts, then selecting 'edit' from the actions dropdown, then finally
+A BulkEdit field is shown when selecting a bunch of posts, then selecting 'edit' from the actions dropdown, then finally
 pressing the `apply` button.
 
 Note that the bulk edit field uses the same save_posts Hook a Metabox does and usually you first have a metabox then

@@ -1,51 +1,27 @@
 <?php
 
-namespace WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\Unit;
+namespace WPPluginSkeleton_Vendor;
 
+uses(\WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\TestCase::class);
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\EmptySupportingScreensException;
 use WPPluginSkeleton_Vendor\VAF\WP\Framework\Metabox\ScreenList;
-use WPPluginSkeleton_Vendor\VAF\WP\FrameworkTests\TestCase;
-/** @internal */
-class ScreenListTest extends TestCase
-{
-    /**
-     * @test
-     */
-    public function should_return_screen_if_supported_is_null()
-    {
-        $screens = ScreenList::fromScreen('expected screen')->withSupporting(null, fn() => [])->screens();
-        $this->assertEquals('expected screen', $screens);
-    }
-    /**
-     * @test
-     */
-    public function should_return_screen_and_supporting_post_type_in_array()
-    {
-        $screens = ScreenList::fromScreen('expected screen')->withSupporting('feature', fn() => ['expected post type'])->screens();
-        $this->assertEquals(['expected screen', 'expected post type'], $screens);
-    }
-    /**
-     * @test
-     */
-    public function should_only_return_supporting_post_type_in_array_if_screen_is_null()
-    {
-        $screens = ScreenList::fromScreen(null)->withSupporting('feature', fn() => ['expected post type'])->screens();
-        $this->assertEquals(['expected post type'], $screens);
-    }
-    /**
-     * @test
-     */
-    public function should_throw_is_empty_exception_if_screen_is_null_and_supporting_screens_are_empty()
-    {
-        $this->expectException(EmptySupportingScreensException::class);
-        ScreenList::fromScreen(null)->withSupporting('feature', fn() => [])->screens();
-    }
-    /**
-     * @test
-     */
-    public function should_return_null_for_screen_null_and_no_supporting_given()
-    {
-        $screens = ScreenList::fromScreen(null)->withSupporting(null, fn(string $feature) => [])->screens();
-        $this->assertEquals(null, $screens);
-    }
-}
+test('should return screen if supported is null', function () {
+    $screens = ScreenList::fromScreen('expected screen')->withSupporting(null, fn() => [])->screens();
+    expect($screens)->toEqual('expected screen');
+});
+test('should return screen and supporting post type in array', function () {
+    $screens = ScreenList::fromScreen('expected screen')->withSupporting('feature', fn() => ['expected post type'])->screens();
+    expect($screens)->toEqual(['expected screen', 'expected post type']);
+});
+test('should only return supporting post type in array if screen is null', function () {
+    $screens = ScreenList::fromScreen(null)->withSupporting('feature', fn() => ['expected post type'])->screens();
+    expect($screens)->toEqual(['expected post type']);
+});
+test('should throw is empty exception if screen is null and supporting screens are empty', function () {
+    $this->expectException(EmptySupportingScreensException::class);
+    ScreenList::fromScreen(null)->withSupporting('feature', fn() => [])->screens();
+});
+test('should return null for screen null and no supporting given', function () {
+    $screens = ScreenList::fromScreen(null)->withSupporting(null, fn(string $feature) => [])->screens();
+    expect($screens)->toEqual(null);
+});

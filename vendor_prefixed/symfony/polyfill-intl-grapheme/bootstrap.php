@@ -11,9 +11,6 @@ namespace WPPluginSkeleton_Vendor;
  * file that was distributed with this source code.
  */
 use WPPluginSkeleton_Vendor\Symfony\Polyfill\Intl\Grapheme as p;
-if (\extension_loaded('intl')) {
-    return;
-}
 if (\PHP_VERSION_ID >= 80000) {
     return require __DIR__ . '/bootstrap80.php';
 }
@@ -87,5 +84,12 @@ if (!\function_exists('grapheme_substr')) {
     function grapheme_substr($string, $offset, $length = null)
     {
         return p\Grapheme::grapheme_substr($string, $offset, $length);
+    }
+}
+if (!\function_exists('WPPluginSkeleton_Vendor\\grapheme_str_split')) {
+    /** @internal */
+    function grapheme_str_split($string, $length = 1)
+    {
+        return p\Grapheme::grapheme_str_split($string, $length);
     }
 }

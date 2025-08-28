@@ -219,7 +219,7 @@ final class TraceableCommand extends Command implements SignalableCommandInterfa
         $this->options = $input->getOptions();
         $event = $this->stopwatch->start($this->getName(), 'command');
         try {
-            $this->exitCode = parent::run($input, $output);
+            $this->exitCode = $this->command->run($input, $output);
         } finally {
             $event->stop();
             if ($output instanceof ConsoleOutputInterface && $output->isDebug()) {

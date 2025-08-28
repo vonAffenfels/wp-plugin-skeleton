@@ -24,15 +24,13 @@ use WPPluginSkeleton_Vendor\Psr\Container\NotFoundExceptionInterface;
  */
 trait ServiceLocatorTrait
 {
-    private array $factories;
     private array $loading = [];
     private array $providedTypes;
     /**
      * @param array<string, callable> $factories
      */
-    public function __construct(array $factories)
+    public function __construct(private array $factories)
     {
-        $this->factories = $factories;
     }
     public function has(string $id) : bool
     {

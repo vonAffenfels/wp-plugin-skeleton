@@ -77,6 +77,8 @@ class PluginSkeletonAction
         } else {
             unset($composerData['homepage']);
         }
+        $composerData['autoload']['psr-4'] = [$namespace . '\\' => 'src/'];
+        $composerData['autoload']['classmap'] = ['vendor_prefixed'];
         if (!empty($authorData)) {
             $composerData['authors'] = [$authorData];
         } else {

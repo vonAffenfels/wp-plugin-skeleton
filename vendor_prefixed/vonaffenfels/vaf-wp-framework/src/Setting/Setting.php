@@ -2,31 +2,46 @@
 
 namespace WPPluginSkeleton_Vendor\VAF\WP\Framework\Setting;
 
-use WPPluginSkeleton_Vendor\VAF\WP\Framework\BaseWordpress;
-/** @internal */
+use WPPluginSkeleton_Vendor\VAF\WP\Framework\Wordpress\Wordpress;
+/**
+ * @template T
+ * @internal
+ */
 abstract class Setting
 {
     private bool $loaded = \false;
     private mixed $value = null;
     private bool $dirty = \false;
-    public function __construct(private readonly string $name, private readonly BaseWordpress $base, protected readonly mixed $default = null)
+    private static array $fakes = [];
+    public function __construct(private readonly string $name, private readonly string $baseName, protected readonly mixed $default = null)
     {
     }
     private function getOptionName() : string
     {
-        return $this->base->getName() . '_' . $this->name;
+        return $this->baseName . '_' . $this->name;
     }
     protected function get(?string $key = null)
     {
+        // Check if this setting is faked
+        if (isset(self::$fakes[$this->name]) && !$this->loaded) {
+            // Treat the fake value as a database value and apply fromDb conversion
+            $this->value = ($this->conversion()->fromDb)(self::$fakes[$this->name]);
+            $this->loaded = \true;
+        }
         $this->migrateIfNecessary();
         if (!$this->loaded) {
-            $this->value = ($this->conversion()->fromDb)(get_option($this->getOptionName(), $this->default));
+            $this->value = ($this->conversion()->fromDb)(Wordpress::get_option($this->getOptionName(), $this->default));
             $this->loaded = \true;
         }
         return \is_null($key) ? $this->value : $this->value[$key] ?? $this->default[$key];
     }
     protected function set($value, ?string $key = null, bool $doSave = \true) : self
     {
+        // If faked, load the fake value first with conversion
+        if (isset(self::$fakes[$this->name]) && !$this->loaded) {
+            $this->value = ($this->conversion()->fromDb)(self::$fakes[$this->name]);
+            $this->loaded = \true;
+        }
         $convertedValue = fn() => $this->conversion()->fromInput !== null ? ($this->conversion()->fromInput)($value) : $value;
         if (\is_null($key)) {
             $this->value = $convertedValue();
@@ -44,11 +59,21 @@ abstract class Setting
     }
     public final function save() : void
     {
+        // If this setting is faked, update the fake value with toDb conversion
+        if (isset(self::$fakes[$this->name])) {
+            self::$fakes[$this->name] = ($this->conversion()->toDb)($this->value);
+            $this->dirty = \false;
+            return;
+        }
         if ($this->dirty) {
-            update_option($this->getOptionName(), ($this->conversion()->toDb)($this->value));
+            Wordpress::update_option($this->getOptionName(), ($this->conversion()->toDb)($this->value));
             $this->dirty = \false;
         }
     }
+    /**
+     * @param ...$args
+     * @return mixed|Setting|null|T
+     */
     public final function __invoke(...$args)
     {
         if (\count($args) === 1) {
@@ -76,5 +101,35 @@ abstract class Setting
     protected function conversion() : Conversion
     {
         return Conversion::identity();
+    }
+    /**
+     * Fake a setting value for testing purposes.
+     * The fake will be used instead of calling WordPress functions.
+     * The value should be in database format (as it would be stored in WordPress options table).
+     * It will be converted using fromDb when retrieved and toDb when saved.
+     *
+     * @param string $settingName The setting name (without prefix)
+     * @param mixed $value The fake value in database format
+     */
+    public static function fakeSetting(string $settingName, mixed $value) : void
+    {
+        self::$fakes[$settingName] = $value;
+    }
+    /**
+     * Clear all fake settings.
+     */
+    public static function clearFakes() : void
+    {
+        self::$fakes = [];
+    }
+    /**
+     * Check if a setting is currently faked.
+     *
+     * @param string $settingName The setting name (without prefix)
+     * @return bool
+     */
+    public static function isFaked(string $settingName) : bool
+    {
+        return isset(self::$fakes[$settingName]);
     }
 }

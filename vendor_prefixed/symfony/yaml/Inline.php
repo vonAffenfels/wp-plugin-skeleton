@@ -634,7 +634,7 @@ class Inline
                             if (\false !== ($scalar = $time->getTimestamp())) {
                                 return $scalar;
                             }
-                        } catch (\ValueError) {
+                        } catch (\WPPluginSkeleton_Vendor\DateRangeError|\ValueError) {
                             // no-op
                         }
                         return $time->format('U');
