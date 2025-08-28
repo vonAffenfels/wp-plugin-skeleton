@@ -1,0 +1,41 @@
+name: wp-plugin-conversion Unittests
+run-name: run pest tests
+on: [push]
+jobs:
+  Pest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup SSH for private repos
+        run: bash prepare-composer-for-actions.sh
+        env:
+          REPOSITORY_ELOQUENT: "vnrag/eloquent-provider;Example SSH Key"
+          #REPOSITORY_ELOQUENT: ${{ secrets.REPOSITORY_ELOQUENT }}
+      - name: Setup PHP with PECL extension
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: composer install
+        run: composer install
+      - name: Run Pest
+        run: ./vendor/bin/pest --colors=always
+      - name: Microsoft Teams Notification
+        uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ vars.VONAFFENFELS_TEAMS_WEBHOOK_URL }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
+
+
+
+
+
+
+
+
+
+
+
+
